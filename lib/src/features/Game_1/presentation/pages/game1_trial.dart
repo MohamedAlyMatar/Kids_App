@@ -221,18 +221,13 @@ class _Game1TrialState extends State<Game1Trial> {
                       ],
                     ),
                     const SizedBox(height: 20),
-                    ElevatedButton(
-                      onPressed: isAnswerSubmitted ? null : submitAnswer,
-                      child: Text("Submit"),
-                    ),
+                    Button1(textButton: "Submit", onPressed: submitAnswer),
                     const SizedBox(height: 10),
                     Text(resultMessage),
+                    const SizedBox(height: 20),
                     if (resultMessage != "Choose the correct images." &&
                         currentTrial != 3)
-                      ElevatedButton(
-                        onPressed: nextTrial,
-                        child: const Text("Next trial ->"),
-                      ),
+                      Button1(textButton: "Next Trial", onPressed: nextTrial),
                   ],
                 ],
               ),
@@ -242,16 +237,11 @@ class _Game1TrialState extends State<Game1Trial> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  ElevatedButton(
-                    onPressed: retryTrials,
-                    child: const Text("Retry trials <-"),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, Routes.game1test);
-                    },
-                    child: const Text("Ready? Start the test now"),
-                  ),
+                  Button1(textButton: "Retry Trial", onPressed: retryTrials),
+                  Button1(
+                      textButton: "Ready? Start the test now",
+                      onPressed: () =>
+                          Navigator.pushNamed(context, Routes.game1test)),
                 ],
               ),
           ],

@@ -17,7 +17,7 @@ class GameDescriptionScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              width: 500,
+              width: 600,
               padding: const EdgeInsets.all(20.0),
               decoration: BoxDecoration(
                 color: AppColors
@@ -35,7 +35,7 @@ class GameDescriptionScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  TextTitle1(textTitle: "Game 1"),
+                  TextTitle1(textTitle: "Game 1: Auditory Working Memory"),
                   TextTitle2(textSubTitle: "Objective"),
                   TextDesc(
                       textDesc:
@@ -49,7 +49,7 @@ class GameDescriptionScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             Button1(
-              textButton: "Begin Trial!",
+              textButton: "Begin Trial",
               onPressed: () => Navigator.pushNamed(context, Routes.game1trial),
             ),
           ],

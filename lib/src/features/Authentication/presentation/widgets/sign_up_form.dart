@@ -175,11 +175,12 @@ class SignUpForm extends StatelessWidget {
                   ),
                 ),
               ),
-              ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, Routes.gameInstruction);
-                  },
-                  child: const Text("Pass")),
+              const SizedBox(height: 16),
+              InkWell(
+                onTap: () =>
+                    Navigator.pushNamed(context, Routes.gameInstruction),
+                child: const Text("Click here to pass for testing..."),
+              )
             ],
           ),
         ),
