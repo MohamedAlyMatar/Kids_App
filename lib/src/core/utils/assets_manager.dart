@@ -8,6 +8,10 @@ class ImgAssets {
 
   static const String listen = '$imgPath/active_listening.png';
   static const String play = '$imgPath/play.png';
+
+  static const String mango1 = '$imgPath/mango_1.png';
+  static const String mango2 = '$imgPath/mango_2.png';
+  static const String apple = '$imgPath/apple.png';
 }
 
 const String logoPath = 'assets/logos';

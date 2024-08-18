@@ -161,49 +161,61 @@ class _Game1TrialState extends State<Game1Trial> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        ElevatedButton(
-                          onPressed: () => selectPicture(0),
-                          child: Text("Pic1"),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: isAnswerSubmitted
-                                ? (correctAnswers.contains(0)
-                                    ? Colors.green
-                                    : selectedPictureIndices.contains(0)
-                                        ? Colors.red
-                                        : Colors.grey)
-                                : selectedPictureIndices.contains(0)
-                                    ? Colors.blue
-                                    : Colors.grey,
+                        InkWell(
+                          onTap: () => selectPicture(0),
+                          child: Container(
+                            padding: EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                              color: isAnswerSubmitted
+                                  ? (correctAnswers.contains(0)
+                                      ? Colors.green
+                                      : selectedPictureIndices.contains(0)
+                                          ? Colors.red
+                                          : Colors.grey)
+                                  : selectedPictureIndices.contains(0)
+                                      ? Colors.blue
+                                      : Colors.grey,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Image.asset(ImgAssets.mango1, width: 100),
                           ),
                         ),
-                        ElevatedButton(
-                          onPressed: () => selectPicture(1),
-                          child: Text("Pic2"),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: isAnswerSubmitted
-                                ? (correctAnswers.contains(1)
-                                    ? Colors.green
-                                    : selectedPictureIndices.contains(1)
-                                        ? Colors.red
-                                        : Colors.grey)
-                                : selectedPictureIndices.contains(1)
-                                    ? Colors.blue
-                                    : Colors.grey,
+                        InkWell(
+                          onTap: () => selectPicture(1),
+                          child: Container(
+                            padding: EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                              color: isAnswerSubmitted
+                                  ? (correctAnswers.contains(1)
+                                      ? Colors.green
+                                      : selectedPictureIndices.contains(1)
+                                          ? Colors.red
+                                          : Colors.grey)
+                                  : selectedPictureIndices.contains(1)
+                                      ? Colors.blue
+                                      : Colors.grey,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Image.asset(ImgAssets.apple, width: 100),
                           ),
                         ),
-                        ElevatedButton(
-                          onPressed: () => selectPicture(2),
-                          child: Text("Pic3"),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: isAnswerSubmitted
-                                ? (correctAnswers.contains(2)
-                                    ? Colors.green
-                                    : selectedPictureIndices.contains(2)
-                                        ? Colors.red
-                                        : Colors.grey)
-                                : selectedPictureIndices.contains(2)
-                                    ? Colors.blue
-                                    : Colors.grey,
+                        InkWell(
+                          onTap: () => selectPicture(2),
+                          child: Container(
+                            padding: EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                              color: isAnswerSubmitted
+                                  ? (correctAnswers.contains(2)
+                                      ? Colors.green
+                                      : selectedPictureIndices.contains(2)
+                                          ? Colors.red
+                                          : Colors.grey)
+                                  : selectedPictureIndices.contains(2)
+                                      ? Colors.blue
+                                      : Colors.grey,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Image.asset(ImgAssets.mango2, width: 100),
                           ),
                         ),
                       ],
@@ -215,7 +227,8 @@ class _Game1TrialState extends State<Game1Trial> {
                     ),
                     const SizedBox(height: 10),
                     Text(resultMessage),
-                    if (resultMessage != "Choose the correct images.")
+                    if (resultMessage != "Choose the correct images." &&
+                        currentTrial != 3)
                       ElevatedButton(
                         onPressed: nextTrial,
                         child: const Text("Next trial ->"),
@@ -225,24 +238,19 @@ class _Game1TrialState extends State<Game1Trial> {
               ),
             ),
             const SizedBox(height: 20),
-            if (!isAudioPlaying && currentTrial < 3)
-              ElevatedButton(
-                onPressed: nextTrial,
-                child: Text("Next trial ->"),
-              )
-            else if (!isAudioPlaying)
+            if (!isAudioPlaying && currentTrial == 3)
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   ElevatedButton(
                     onPressed: retryTrials,
-                    child: Text("Retry trials <-"),
+                    child: const Text("Retry trials <-"),
                   ),
                   ElevatedButton(
                     onPressed: () {
                       Navigator.pushNamed(context, Routes.game1test);
                     },
-                    child: Text("Ready? Start the test now"),
+                    child: const Text("Ready? Start the test now"),
                   ),
                 ],
               ),
