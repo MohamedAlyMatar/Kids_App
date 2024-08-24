@@ -75,15 +75,20 @@ class _GamesScreenState extends State<GamesScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    GameTile("Game 1"),
+                    GameTile("Game 1",
+                        () => Navigator.pushNamed(context, Routes.gameOneDesc)),
                     const SizedBox(height: 16),
-                    GameTile("Game 2"),
+                    GameTile("Game 2",
+                        () => Navigator.pushNamed(context, Routes.gameTwoDesc)),
                     const SizedBox(height: 16),
-                    GameTile("Game 3"),
+                    GameTile("Game 3",
+                        () => Navigator.pushNamed(context, Routes.gameOneDesc)),
                     const SizedBox(height: 16),
-                    GameTile("Game 4"),
+                    GameTile("Game 4",
+                        () => Navigator.pushNamed(context, Routes.gameOneDesc)),
                     const SizedBox(height: 16),
-                    GameTile("Game 5"),
+                    GameTile("Game 5",
+                        () => Navigator.pushNamed(context, Routes.gameOneDesc)),
                   ],
                 ),
               ),
@@ -94,12 +99,9 @@ class _GamesScreenState extends State<GamesScreen> {
     );
   }
 
-  Widget GameTile(String title) {
+  Widget GameTile(String title, VoidCallback onPressed) {
     return ElevatedButton(
-      onPressed: () {
-        // Handle game selection
-        Navigator.pushNamed(context, Routes.game1desc);
-      },
+      onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
         backgroundColor: AppColors

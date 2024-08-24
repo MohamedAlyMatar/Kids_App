@@ -7,12 +7,12 @@ import 'package:kids_app/src/core/widgets/button1.dart';
 import 'package:kids_app/src/core/widgets/textDesc.dart';
 import 'package:kids_app/src/core/widgets/tileHeading.dart';
 
-class Game1Trial extends StatefulWidget {
+class GameOneTrial extends StatefulWidget {
   @override
-  _Game1TrialState createState() => _Game1TrialState();
+  _GameOneTrialState createState() => _GameOneTrialState();
 }
 
-class _Game1TrialState extends State<Game1Trial> {
+class _GameOneTrialState extends State<GameOneTrial> {
   int currentTrial = 1;
   String resultMessage = "";
   bool isAudioPlaying = false;
@@ -241,7 +241,7 @@ class _Game1TrialState extends State<Game1Trial> {
                   Button1(
                       textButton: "Ready? Start the test now",
                       onPressed: () =>
-                          Navigator.pushNamed(context, Routes.game1test)),
+                          Navigator.pushNamed(context, Routes.gameOneTest)),
                 ],
               ),
           ],

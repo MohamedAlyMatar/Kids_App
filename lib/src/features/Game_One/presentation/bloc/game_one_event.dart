@@ -26,3 +26,12 @@
 //   @override
 //   List<Object> get props => [isCorrect];
 // }
+
+part of 'game_one_bloc.dart';
+
+abstract class GameOneEvent extends Equatable {
+  GameTwoEvent();
+
+  @override
+  List<Object> get props => [];
+}

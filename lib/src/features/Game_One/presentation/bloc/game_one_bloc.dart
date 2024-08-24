@@ -120,3 +120,17 @@
 //     });
 //   }
 // }
+
+import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
+
+part 'game_one_event.dart';
+part 'game_one_state.dart';
+
+class GameOneBloc extends Bloc<GameOneEvent, GameOneState> {
+  GameOneBloc() : super(GameOneInitial()) {
+    on<GameOneEvent>((event, emit) {
+      // TODO: implement event handler
+    });
+  }
+}

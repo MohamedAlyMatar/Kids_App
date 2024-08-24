@@ -3,9 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kids_app/src/features/Authentication/presentation/bloc/authentication_bloc.dart';
 import 'package:kids_app/src/features/Authentication/presentation/pages/sign_in.dart';
 import 'package:kids_app/src/features/Authentication/presentation/pages/sign_up.dart';
+import 'package:kids_app/src/features/Game_One/presentation/bloc/game_one_bloc.dart';
 import 'package:kids_app/src/features/Game_One/presentation/pages/game_one_test.dart';
 import 'package:kids_app/src/features/Game_One/presentation/pages/game_one_description.dart';
 import 'package:kids_app/src/features/Game_One/presentation/pages/game_one_trial.dart';
+import 'package:kids_app/src/features/Game_Two/presentation/bloc/game_two_bloc.dart';
+import 'package:kids_app/src/features/Game_Two/presentation/pages/game_two_description.dart';
+import 'package:kids_app/src/features/Game_Two/presentation/pages/game_two_test.dart';
+import 'package:kids_app/src/features/Game_Two/presentation/pages/game_two_trial.dart';
+import 'package:kids_app/src/features/Games/presentation/bloc/games_bloc.dart';
 import 'package:kids_app/src/features/Games/presentation/pages/games_screen.dart';
 import 'package:kids_app/src/features/Games/presentation/pages/instr_screen.dart';
 import 'package:kids_app/src/features/Splash/presentation/pages/splash_screen.dart';
@@ -21,15 +27,22 @@ class Routes {
   static const String gameInstruction = "/gameInstruction";
   static const String gamesMenu = "/gamesMenu";
 
-  static const String game1desc = "/game1desc";
-  static const String game1trial = "/game1trial";
-  static const String game1test = "/game1test";
+  // Game One Routes
+  static const String gameOneDesc = "/gameOneDesc";
+  static const String gameOneTrial = "/gameOneTrial";
+  static const String gameOneTest = "/gameOneTest";
+
+  // Game Two Routes
+  static const String gameTwoDesc = "/gameTwoDesc";
+  static const String gameTwoTrial = "/gameTwoTrial";
+  static const String gameTwoTest = "/gameTwoTest";
 }
 
 // Genrated Routes
 class AppRoutes {
   static Route? onGenerateRoute(RouteSettings routeSettings) {
     switch (routeSettings.name) {
+      // Splash Screen
       case Routes.initialRoute:
         return MaterialPageRoute(
             builder: (contect) => BlocProvider(
@@ -54,35 +67,53 @@ class AppRoutes {
                 create: (context) => AuthenticationBloc(),
                 child: SignUpScreen()));
 
+      // Games Menu Routes
       case Routes.gameInstruction:
         return MaterialPageRoute(
             builder: (contect) => BlocProvider(
-                create: (context) => AuthenticationBloc(),
-                child: InstrScreen()));
+                create: (context) => GamesBloc(), child: InstrScreen()));
 
       case Routes.gamesMenu:
         return MaterialPageRoute(
             builder: (contect) => BlocProvider(
-                create: (context) => AuthenticationBloc(),
-                child: GamesScreen()));
+                create: (context) => GamesBloc(), child: GamesScreen()));
 
-      case Routes.game1desc:
+      // Game One Routes
+      case Routes.gameOneDesc:
         return MaterialPageRoute(
           builder: (contect) => BlocProvider(
-              create: (context) => AuthenticationBloc(),
-              child: GameDescriptionScreen()),
+              create: (context) => GameOneBloc(), child: GameOneDescription()),
         );
 
-      case Routes.game1trial:
+      case Routes.gameOneTrial:
         return MaterialPageRoute(
           builder: (contect) => BlocProvider(
-              create: (context) => AuthenticationBloc(), child: Game1Trial()),
+              create: (context) => GameOneBloc(), child: GameOneTrial()),
         );
 
-      case Routes.game1test:
+      case Routes.gameOneTest:
         return MaterialPageRoute(
           builder: (contect) => BlocProvider(
-              create: (context) => AuthenticationBloc(), child: Game1Test()),
+              create: (context) => GameOneBloc(), child: GameOneTest()),
+        );
+
+      // Game Two Routes
+      case Routes.gameTwoDesc:
+        return MaterialPageRoute(
+          builder: (contect) => BlocProvider(
+              create: (context) => GameTwoBloc(), child: GameTwoDescription()),
+        );
+
+      case Routes.gameTwoTrial:
+        return MaterialPageRoute(
+          builder: (contect) => BlocProvider(
+              create: (context) => GameTwoBloc(), child: GameTwoTrial()),
+        );
+
+      case Routes.gameTwoTest:
+        return MaterialPageRoute(
+          builder: (contect) => BlocProvider(
+              create: (context) => GameTwoBloc(), child: GameTwoTest()),
         );
 
       default:

@@ -6,8 +6,8 @@ import 'package:kids_app/src/core/widgets/textDesc.dart';
 import 'package:kids_app/src/core/widgets/textTitle1.dart';
 import 'package:kids_app/src/core/widgets/textTitle2.dart';
 
-class GameOneDescription extends StatelessWidget {
-  const GameOneDescription({super.key});
+class GameTwoDescription extends StatelessWidget {
+  const GameTwoDescription({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,8 +20,7 @@ class GameOneDescription extends StatelessWidget {
               width: 600,
               padding: const EdgeInsets.all(20.0),
               decoration: BoxDecoration(
-                color: AppColors
-                    .primaryColor, // Change as needed for better contrast
+                color: AppColors.primaryColor,
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: [
                   BoxShadow(
@@ -35,7 +34,7 @@ class GameOneDescription extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  TextTitle1(textTitle: "Game 1: Auditory Working Memory"),
+                  TextTitle1(textTitle: "Game 2: Auditory Working Memory"),
                   TextTitle2(textSubTitle: "Objective"),
                   TextDesc(
                       textDesc:
@@ -51,7 +50,7 @@ class GameOneDescription extends StatelessWidget {
             Button1(
               textButton: "Begin Trial",
               onPressed: () =>
-                  Navigator.pushNamed(context, Routes.gameOneTrial),
+                  Navigator.pushNamed(context, Routes.gameTwoTrial),
             ),
           ],
         ),

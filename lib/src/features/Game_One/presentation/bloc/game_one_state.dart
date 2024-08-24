@@ -33,3 +33,14 @@
 //   @override
 //   List<Object> get props => [isCorrect, resultMessage];
 // }
+
+part of 'game_one_bloc.dart';
+
+abstract class GameOneState extends Equatable {
+  const GameOneState();
+
+  @override
+  List<Object> get props => [];
+}
+
+class GameOneInitial extends GameOneState {}
