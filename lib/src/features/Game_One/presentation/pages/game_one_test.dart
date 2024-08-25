@@ -6,6 +6,7 @@ import 'package:kids_app/src/core/utils/assets_manager.dart';
 import 'package:kids_app/src/core/widgets/button1.dart';
 import 'package:kids_app/src/core/widgets/textDesc.dart';
 import 'package:kids_app/src/core/widgets/tileHeading.dart';
+import 'package:kids_app/src/features/Game_One/presentation/widgets/audio_player.dart';
 import 'package:kids_app/src/features/Game_One/presentation/widgets/timer.dart';
 
 class GameOneTest extends StatefulWidget {
@@ -15,11 +16,9 @@ class GameOneTest extends StatefulWidget {
 
 class _GameOneTestState extends State<GameOneTest> {
   int currentTest = 1;
-  int currentLevel = 1; // Track the current level
+  int currentLevel = 1;
   String resultMessage = "";
-  bool isAudioPlaying = false;
   bool showPictures = false;
-  late AudioPlayer audioPlayer;
   List<int> selectedPictureIndices = [];
   bool isAnswerSubmitted = false;
   List<int> correctAnswers = [0];
@@ -36,47 +35,11 @@ class _GameOneTestState extends State<GameOneTest> {
     ImgAssets.mango2,
   ];
 
-  @override
-  void initState() {
-    print(correctAnswers.length);
-    super.initState();
-    audioPlayer = AudioPlayer();
-    audioPlayer.setSourceAsset('assets/audios/mango.mp3');
-  }
-
-  @override
-  void dispose() {
-    audioPlayer.dispose();
-    super.dispose();
-  }
-
-  void playAudio() async {
+  void onAudioComplete() {
     setState(() {
-      isAudioPlaying = true;
-      resultMessage = "Audio is playing, listen carefully...";
-      showPictures = false;
-      selectedPictureIndices.clear();
-      isAnswerSubmitted = false;
+      showPictures = true;
+      resultMessage = "Choose the correct images.";
     });
-
-    try {
-      await audioPlayer.play(AssetSource('audios/mango.mp3'));
-
-      audioPlayer.onPlayerComplete.listen((_) {
-        if (mounted) {
-          setState(() {
-            isAudioPlaying = false;
-            showPictures = true;
-            resultMessage = "Choose the correct images.";
-          });
-        }
-      });
-    } catch (e) {
-      setState(() {
-        isAudioPlaying = false;
-        resultMessage = "Error playing audio: $e";
-      });
-    }
   }
 
   void selectPicture(int index) {
@@ -127,11 +90,8 @@ class _GameOneTestState extends State<GameOneTest> {
       isAnswerSubmitted = false;
       userAnswers.clear();
 
-      // Increase the number of picture choices based on the level
       correctAnswers = List.generate(currentLevel + 1, (index) => index);
     });
-
-    // Navigator.pushNamed(context, Routes.gameOneTest);
   }
 
   bool checkAnswer() {
@@ -139,7 +99,6 @@ class _GameOneTestState extends State<GameOneTest> {
   }
 
   void onTimerEnd() {
-    // Handle what happens when the timer ends
     print("Timer has ended!");
   }
 
@@ -161,7 +120,7 @@ class _GameOneTestState extends State<GameOneTest> {
                 children: [
                   ListTile(
                     leading: CountdownTimer(
-                      initialTime: 30, // 30 seconds countdown
+                      initialTime: 30,
                       onTimerEnd: onTimerEnd,
                     ),
                     title: Text("Game 1"),
@@ -170,41 +129,21 @@ class _GameOneTestState extends State<GameOneTest> {
                     trailing: Text("AWM"),
                   ),
                   const SizedBox(height: 20),
-                  if (!isAudioPlaying && !showPictures) ...[
-                    Image.asset(
-                      ImgAssets.play,
-                      width: 100,
+                  if (!showPictures)
+                    AudioPlayerWidget(
+                      audioPath: 'audios/mango.mp3',
+                      onAudioComplete: onAudioComplete,
                     ),
-                    const SizedBox(height: 20),
-                    TextDesc(textDesc: "Click play audio to begin"),
-                    const SizedBox(height: 20),
-                    Button1(textButton: "Play Audio", onPressed: playAudio),
-                  ] else if (isAudioPlaying) ...[
-                    Image.asset(
-                      ImgAssets.listen,
-                      width: 100,
-                    ),
-                    const SizedBox(height: 20),
-                    const Text(
-                      "Audio is playing, listen carefully...",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.red,
-                      ),
-                    ),
-                  ],
                   if (showPictures) ...[
                     GridView.builder(
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3, // Number of columns in the grid
-                        mainAxisSpacing: 10, // Spacing between rows
-                        crossAxisSpacing: 10, // Spacing between columns
-                        childAspectRatio: 3, // Aspect ratio for each grid item
+                        crossAxisCount: 3,
+                        mainAxisSpacing: 10,
+                        crossAxisSpacing: 10,
+                        childAspectRatio: 3,
                       ),
-                      itemCount:
-                          imageLength, // Use the length of the images list
+                      itemCount: imageLength,
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
                         return InkWell(
@@ -224,7 +163,7 @@ class _GameOneTestState extends State<GameOneTest> {
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Image.asset(
-                              images[index], // Use the image from the list
+                              images[index],
                               width: 50,
                             ),
                           ),
@@ -244,14 +183,14 @@ class _GameOneTestState extends State<GameOneTest> {
               ),
             ),
             const SizedBox(height: 20),
-            if (!isAudioPlaying && currentTest == 2 && checkAnswer()) ...[
+            if (!showPictures && currentTest == 2 && checkAnswer()) ...[
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   TextDesc(textDesc: "You passed this level!"),
                   Button1(
                     textButton: "Start the Next Level",
-                    onPressed: startNextLevel, // Updated onPressed
+                    onPressed: startNextLevel,
                   ),
                 ],
               ),
