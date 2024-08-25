@@ -13,20 +13,28 @@ class GameOneTest extends StatefulWidget {
 }
 
 class _GameOneTestState extends State<GameOneTest> {
-  int currentTrial = 1;
+  int currentTest = 1;
+  int currentLevel = 1; // Track the current level
   String resultMessage = "";
   bool isAudioPlaying = false;
   bool showPictures = false;
   late AudioPlayer audioPlayer;
   List<int> selectedPictureIndices = [];
   bool isAnswerSubmitted = false;
-  final List<int> correctAnswers = [
-    0,
-    2
-  ]; // Example correct answers for trial 1
+  List<int> correctAnswers = [0];
+  late int fullMark = correctAnswers.length;
+
+  List<int> userAnswers = [];
+
+  // List to hold the images for each level
+  List<String> images = [
+    ImgAssets.mango1, // Image 0
+    ImgAssets.mango2, // Image 2
+  ];
 
   @override
   void initState() {
+    print(correctAnswers.length);
     super.initState();
     audioPlayer = AudioPlayer();
     audioPlayer.setSourceAsset('assets/audios/mango.mp3');
@@ -43,8 +51,8 @@ class _GameOneTestState extends State<GameOneTest> {
       isAudioPlaying = true;
       resultMessage = "Audio is playing, listen carefully...";
       showPictures = false;
-      selectedPictureIndices.clear(); // Reset selections
-      isAnswerSubmitted = false; // Allow new selection
+      selectedPictureIndices.clear();
+      isAnswerSubmitted = false;
     });
 
     try {
@@ -87,13 +95,15 @@ class _GameOneTestState extends State<GameOneTest> {
           .length;
       resultMessage =
           "You got $correctCount out of ${correctAnswers.length} correct!";
+      userAnswers.add(correctCount);
+      print(userAnswers);
     });
   }
 
   void nextTrial() {
-    if (currentTrial < 3) {
+    if (currentTest < 2) {
       setState(() {
-        currentTrial++;
+        currentTest++;
         resultMessage = "";
         showPictures = false;
         selectedPictureIndices.clear();
@@ -102,14 +112,33 @@ class _GameOneTestState extends State<GameOneTest> {
     }
   }
 
-  void retryTrials() {
+  void startNextLevel() {
     setState(() {
-      currentTrial = 1;
+      currentLevel++;
+      currentTest = 1;
       resultMessage = "";
       showPictures = false;
       selectedPictureIndices.clear();
       isAnswerSubmitted = false;
+      userAnswers.clear();
+
+      // Increase the number of picture choices based on the level
+      correctAnswers = List.generate(currentLevel + 1, (index) => index);
+
+      // Add more images for the new level if needed
+      images.addAll([
+        ImgAssets.apple, // Image 1
+
+        // ImgAssets.banana, // Example additional image
+        // ImgAssets.orange, // Example additional image
+      ]);
     });
+
+    Navigator.pushNamed(context, Routes.gameOneTest);
+  }
+
+  bool checkAnswer() {
+    return userAnswers.contains(fullMark);
   }
 
   @override
@@ -129,9 +158,10 @@ class _GameOneTestState extends State<GameOneTest> {
               child: Column(
                 children: [
                   Tileheading(
-                      title: "Game 1",
-                      subtitle: "Trial $currentTrial of 3",
-                      trailing: "AWM"),
+                    title: "Game 1",
+                    subtitle: "Test $currentTest of 2 - Level $currentLevel",
+                    trailing: "AWM",
+                  ),
                   const SizedBox(height: 20),
                   if (!isAudioPlaying && !showPictures) ...[
                     Image.asset(
@@ -155,70 +185,44 @@ class _GameOneTestState extends State<GameOneTest> {
                         fontWeight: FontWeight.bold,
                         color: Colors.red,
                       ),
-                    )
+                    ),
                   ],
                   if (showPictures) ...[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        InkWell(
-                          onTap: () => selectPicture(0),
+                    GridView.builder(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3, // Number of columns in the grid
+                        mainAxisSpacing: 10, // Spacing between rows
+                        crossAxisSpacing: 10, // Spacing between columns
+                        childAspectRatio: 3, // Aspect ratio for each grid item
+                      ),
+                      itemCount:
+                          images.length, // Use the length of the images list
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return InkWell(
+                          onTap: () => selectPicture(index),
                           child: Container(
                             padding: EdgeInsets.all(5),
                             decoration: BoxDecoration(
                               color: isAnswerSubmitted
-                                  ? (correctAnswers.contains(0)
+                                  ? (correctAnswers.contains(index)
                                       ? Colors.green
-                                      : selectedPictureIndices.contains(0)
+                                      : selectedPictureIndices.contains(index)
                                           ? Colors.red
                                           : Colors.grey)
-                                  : selectedPictureIndices.contains(0)
+                                  : selectedPictureIndices.contains(index)
                                       ? Colors.blue
                                       : Colors.grey,
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            child: Image.asset(ImgAssets.mango1, width: 100),
-                          ),
-                        ),
-                        InkWell(
-                          onTap: () => selectPicture(1),
-                          child: Container(
-                            padding: EdgeInsets.all(5),
-                            decoration: BoxDecoration(
-                              color: isAnswerSubmitted
-                                  ? (correctAnswers.contains(1)
-                                      ? Colors.green
-                                      : selectedPictureIndices.contains(1)
-                                          ? Colors.red
-                                          : Colors.grey)
-                                  : selectedPictureIndices.contains(1)
-                                      ? Colors.blue
-                                      : Colors.grey,
-                              borderRadius: BorderRadius.circular(10),
+                            child: Image.asset(
+                              images[index], // Use the image from the list
+                              width: 50,
                             ),
-                            child: Image.asset(ImgAssets.apple, width: 100),
                           ),
-                        ),
-                        InkWell(
-                          onTap: () => selectPicture(2),
-                          child: Container(
-                            padding: EdgeInsets.all(5),
-                            decoration: BoxDecoration(
-                              color: isAnswerSubmitted
-                                  ? (correctAnswers.contains(2)
-                                      ? Colors.green
-                                      : selectedPictureIndices.contains(2)
-                                          ? Colors.red
-                                          : Colors.grey)
-                                  : selectedPictureIndices.contains(2)
-                                      ? Colors.blue
-                                      : Colors.grey,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Image.asset(ImgAssets.mango2, width: 100),
-                          ),
-                        ),
-                      ],
+                        );
+                      },
                     ),
                     const SizedBox(height: 20),
                     Button1(textButton: "Submit", onPressed: submitAnswer),
@@ -226,24 +230,32 @@ class _GameOneTestState extends State<GameOneTest> {
                     Text(resultMessage),
                     const SizedBox(height: 20),
                     if (resultMessage != "Choose the correct images." &&
-                        currentTrial != 3)
-                      Button1(textButton: "Next Trial", onPressed: nextTrial),
+                        currentTest != 2)
+                      Button1(textButton: "Next Test", onPressed: nextTrial),
                   ],
                 ],
               ),
             ),
             const SizedBox(height: 20),
-            if (!isAudioPlaying && currentTrial == 3)
+            if (!isAudioPlaying && currentTest == 2 && checkAnswer()) ...[
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Button1(textButton: "Retry Trial", onPressed: retryTrials),
+                  TextDesc(textDesc: "You passed this level!"),
                   Button1(
-                      textButton: "Ready? Start the test now",
-                      onPressed: () =>
-                          Navigator.pushNamed(context, Routes.gameOneTest)),
+                    textButton: "Start the Next Level",
+                    onPressed: startNextLevel, // Updated onPressed
+                  ),
                 ],
               ),
+            ] else ...[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  TextDesc(textDesc: "Sorry you didn't meet the minimum score"),
+                ],
+              ),
+            ]
           ],
         ),
       ),

@@ -48,10 +48,20 @@ class GameOneDescription extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            Button1(
-              textButton: "Begin Trial",
-              onPressed: () =>
-                  Navigator.pushNamed(context, Routes.gameOneTrial),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Button1(
+                  textButton: "Begin Trial",
+                  onPressed: () =>
+                      Navigator.pushNamed(context, Routes.gameOneTrial),
+                ),
+                Button1(
+                  textButton: "Begin Test",
+                  onPressed: () =>
+                      Navigator.pushNamed(context, Routes.gameOneTest),
+                ),
+              ],
             ),
           ],
         ),
