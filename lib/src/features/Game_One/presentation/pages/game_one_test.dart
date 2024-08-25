@@ -6,6 +6,7 @@ import 'package:kids_app/src/core/utils/assets_manager.dart';
 import 'package:kids_app/src/core/widgets/button1.dart';
 import 'package:kids_app/src/core/widgets/textDesc.dart';
 import 'package:kids_app/src/core/widgets/tileHeading.dart';
+import 'package:kids_app/src/features/Game_One/presentation/widgets/timer.dart';
 
 class GameOneTest extends StatefulWidget {
   @override
@@ -25,11 +26,14 @@ class _GameOneTestState extends State<GameOneTest> {
   late int fullMark = correctAnswers.length;
 
   List<int> userAnswers = [];
-
-  // List to hold the images for each level
+  int imageLength = 2;
   List<String> images = [
-    ImgAssets.mango1, // Image 0
-    ImgAssets.mango2, // Image 2
+    ImgAssets.mango1,
+    ImgAssets.mango2,
+    ImgAssets.mango2,
+    ImgAssets.mango2,
+    ImgAssets.mango2,
+    ImgAssets.mango2,
   ];
 
   @override
@@ -114,6 +118,7 @@ class _GameOneTestState extends State<GameOneTest> {
 
   void startNextLevel() {
     setState(() {
+      imageLength = imageLength + 2;
       currentLevel++;
       currentTest = 1;
       resultMessage = "";
@@ -124,21 +129,18 @@ class _GameOneTestState extends State<GameOneTest> {
 
       // Increase the number of picture choices based on the level
       correctAnswers = List.generate(currentLevel + 1, (index) => index);
-
-      // Add more images for the new level if needed
-      images.addAll([
-        ImgAssets.apple, // Image 1
-
-        // ImgAssets.banana, // Example additional image
-        // ImgAssets.orange, // Example additional image
-      ]);
     });
 
-    Navigator.pushNamed(context, Routes.gameOneTest);
+    // Navigator.pushNamed(context, Routes.gameOneTest);
   }
 
   bool checkAnswer() {
     return userAnswers.contains(fullMark);
+  }
+
+  void onTimerEnd() {
+    // Handle what happens when the timer ends
+    print("Timer has ended!");
   }
 
   @override
@@ -157,10 +159,15 @@ class _GameOneTestState extends State<GameOneTest> {
               ),
               child: Column(
                 children: [
-                  Tileheading(
-                    title: "Game 1",
-                    subtitle: "Test $currentTest of 2 - Level $currentLevel",
-                    trailing: "AWM",
+                  ListTile(
+                    leading: CountdownTimer(
+                      initialTime: 30, // 30 seconds countdown
+                      onTimerEnd: onTimerEnd,
+                    ),
+                    title: Text("Game 1"),
+                    subtitle:
+                        Text("Test $currentTest of 2 - Level $currentLevel"),
+                    trailing: Text("AWM"),
                   ),
                   const SizedBox(height: 20),
                   if (!isAudioPlaying && !showPictures) ...[
@@ -197,7 +204,7 @@ class _GameOneTestState extends State<GameOneTest> {
                         childAspectRatio: 3, // Aspect ratio for each grid item
                       ),
                       itemCount:
-                          images.length, // Use the length of the images list
+                          imageLength, // Use the length of the images list
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
                         return InkWell(
