@@ -49,8 +49,7 @@ class GameTwoDescription extends StatelessWidget {
             const SizedBox(height: 20),
             Button1(
               textButton: "Begin Trial",
-              onPressed: () =>
-                  Navigator.pushNamed(context, Routes.gameTwoTrial),
+              onPressed: () => Navigator.pushNamed(context, Routes.gameTwoFam),
             ),
           ],
         ),

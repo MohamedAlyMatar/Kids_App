@@ -9,6 +9,7 @@ import 'package:kids_app/src/features/Game_One/presentation/pages/game_one_descr
 import 'package:kids_app/src/features/Game_One/presentation/pages/game_one_trial.dart';
 import 'package:kids_app/src/features/Game_Two/presentation/bloc/game_two_bloc.dart';
 import 'package:kids_app/src/features/Game_Two/presentation/pages/game_two_description.dart';
+import 'package:kids_app/src/features/Game_Two/presentation/pages/game_two_familiarize.dart';
 import 'package:kids_app/src/features/Game_Two/presentation/pages/game_two_test.dart';
 import 'package:kids_app/src/features/Game_Two/presentation/pages/game_two_trial.dart';
 import 'package:kids_app/src/features/Games/presentation/bloc/games_bloc.dart';
@@ -34,6 +35,7 @@ class Routes {
 
   // Game Two Routes
   static const String gameTwoDesc = "/gameTwoDesc";
+  static const String gameTwoFam = "/gameTwoFam";
   static const String gameTwoTrial = "/gameTwoTrial";
   static const String gameTwoTest = "/gameTwoTest";
 }
@@ -114,6 +116,12 @@ class AppRoutes {
         return MaterialPageRoute(
           builder: (contect) => BlocProvider(
               create: (context) => GameTwoBloc(), child: GameTwoTest()),
+        );
+
+      case Routes.gameTwoFam:
+        return MaterialPageRoute(
+          builder: (contect) => BlocProvider(
+              create: (context) => GameTwoBloc(), child: FamiliarizeScreen()),
         );
 
       default:
