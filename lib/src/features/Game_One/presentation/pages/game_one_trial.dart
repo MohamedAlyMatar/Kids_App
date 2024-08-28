@@ -6,6 +6,7 @@ import 'package:kids_app/src/core/utils/assets_manager.dart';
 import 'package:kids_app/src/core/widgets/button1.dart';
 import 'package:kids_app/src/core/widgets/textDesc.dart';
 import 'package:kids_app/src/core/widgets/tileHeading.dart';
+import 'package:kids_app/src/features/Game_One/presentation/widgets/timer.dart';
 
 class GameOneTrial extends StatefulWidget {
   @override
@@ -112,6 +113,10 @@ class _GameOneTrialState extends State<GameOneTrial> {
     });
   }
 
+  void onTimerEnd() {
+    print("Timer has ended!");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -129,6 +134,8 @@ class _GameOneTrialState extends State<GameOneTrial> {
               child: Column(
                 children: [
                   Tileheading(
+                      timer: CountdownTimer(
+                          initialTime: 30, onTimerEnd: onTimerEnd),
                       title: "Game 1",
                       subtitle: "Trial $currentTrial of 3",
                       trailing: "AWM"),

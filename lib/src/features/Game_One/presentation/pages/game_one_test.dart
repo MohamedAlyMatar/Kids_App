@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:audioplayers/audioplayers.dart';
-import 'package:kids_app/src/config/routes/app_routes.dart';
 import 'package:kids_app/src/core/utils/app_colors.dart';
 import 'package:kids_app/src/core/utils/assets_manager.dart';
 import 'package:kids_app/src/core/widgets/button1.dart';
 import 'package:kids_app/src/core/widgets/textDesc.dart';
 import 'package:kids_app/src/core/widgets/tileHeading.dart';
+import 'package:kids_app/src/features/Game_One/data/datasources/img_list.dart';
 import 'package:kids_app/src/features/Game_One/presentation/widgets/audio_player.dart';
 import 'package:kids_app/src/features/Game_One/presentation/widgets/timer.dart';
+import 'package:kids_app/src/config/routes/app_routes.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 class GameOneTest extends StatefulWidget {
   @override
@@ -21,19 +22,7 @@ class _GameOneTestState extends State<GameOneTest> {
   bool showPictures = false;
   List<int> selectedPictureIndices = [];
   bool isAnswerSubmitted = false;
-  List<int> correctAnswers = [0];
-  late int fullMark = correctAnswers.length;
-
-  List<int> userAnswers = [];
-  int imageLength = 2;
-  List<String> images = [
-    ImgAssets.mango1,
-    ImgAssets.mango2,
-    ImgAssets.mango2,
-    ImgAssets.mango2,
-    ImgAssets.mango2,
-    ImgAssets.mango2,
-  ];
+  String globalTarget = "mango"; // Set your global target here
 
   void onAudioComplete() {
     setState(() {
@@ -58,12 +47,9 @@ class _GameOneTestState extends State<GameOneTest> {
     setState(() {
       isAnswerSubmitted = true;
       int correctCount = selectedPictureIndices
-          .where((index) => correctAnswers.contains(index))
+          .where((index) => imgTargets.values.toList()[index] == globalTarget)
           .length;
-      resultMessage =
-          "You got $correctCount out of ${correctAnswers.length} correct!";
-      userAnswers.add(correctCount);
-      print(userAnswers);
+      resultMessage = "You got $correctCount correct images!";
     });
   }
 
@@ -81,21 +67,20 @@ class _GameOneTestState extends State<GameOneTest> {
 
   void startNextLevel() {
     setState(() {
-      imageLength = imageLength + 2;
       currentLevel++;
       currentTest = 1;
       resultMessage = "";
       showPictures = false;
       selectedPictureIndices.clear();
       isAnswerSubmitted = false;
-      userAnswers.clear();
-
-      correctAnswers = List.generate(currentLevel + 1, (index) => index);
     });
   }
 
   bool checkAnswer() {
-    return userAnswers.contains(fullMark);
+    return selectedPictureIndices
+            .where((index) => imgTargets.values.toList()[index] == globalTarget)
+            .length ==
+        1;
   }
 
   void onTimerEnd() {
@@ -142,7 +127,7 @@ class _GameOneTestState extends State<GameOneTest> {
                         crossAxisSpacing: 10,
                         childAspectRatio: 3,
                       ),
-                      itemCount: imageLength,
+                      itemCount: imgTargets.length,
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
                         return InkWell(
@@ -151,7 +136,8 @@ class _GameOneTestState extends State<GameOneTest> {
                             padding: EdgeInsets.all(5),
                             decoration: BoxDecoration(
                               color: isAnswerSubmitted
-                                  ? (correctAnswers.contains(index)
+                                  ? (imgTargets.values.toList()[index] ==
+                                          globalTarget
                                       ? Colors.green
                                       : selectedPictureIndices.contains(index)
                                           ? Colors.red
@@ -162,7 +148,7 @@ class _GameOneTestState extends State<GameOneTest> {
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Image.asset(
-                              images[index],
+                              imgTargets.keys.toList()[index],
                               width: 50,
                             ),
                           ),
