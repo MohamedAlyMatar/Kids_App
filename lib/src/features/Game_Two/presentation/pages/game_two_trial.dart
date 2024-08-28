@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kids_app/src/core/utils/app_colors.dart';
 
 void main() {
   runApp(MaterialApp(home: GameTwoTrial()));
@@ -23,8 +24,7 @@ class GameTwoTrial extends StatelessWidget {
               Container(
                 padding: EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: Colors.purple
-                      .shade300, // Darker purple for the title background
+                  color: AppColors.primaryColor,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Row(
@@ -68,8 +68,7 @@ class GameTwoTrial extends StatelessWidget {
                           SizedBox(height: 10),
                           Expanded(
                             child: Container(
-                              color: Colors
-                                  .purple.shade100, // Background color for list
+                              color: Colors.purple.shade100,
                               child: ListView(
                                 children: List.generate(
                                   5,
@@ -77,8 +76,7 @@ class GameTwoTrial extends StatelessWidget {
                                     padding: const EdgeInsets.all(8.0),
                                     child: Container(
                                       height: 50,
-                                      color:
-                                          Colors.white, // Item background color
+                                      color: Colors.white,
                                       child: Center(
                                           child: Text("Item ${index + 1}")),
                                     ),

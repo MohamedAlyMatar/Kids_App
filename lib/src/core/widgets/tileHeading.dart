@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:kids_app/src/core/utils/app_colors.dart';
 
 class Tileheading extends StatelessWidget {
   // const Tileheading({super.key});
+  Widget timer;
   String title;
   String subtitle;
   String trailing;
 
   Tileheading({
+    required this.timer,
     required this.title,
     required this.subtitle,
     required this.trailing,
@@ -21,6 +24,7 @@ class Tileheading extends StatelessWidget {
         color: AppColors.backgroundColor,
       ),
       child: ListTile(
+        leading: timer,
         title: Text(
           title,
           style: const TextStyle(

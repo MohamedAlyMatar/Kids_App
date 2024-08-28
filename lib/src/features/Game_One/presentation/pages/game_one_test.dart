@@ -118,15 +118,14 @@ class _GameOneTestState extends State<GameOneTest> {
               ),
               child: Column(
                 children: [
-                  ListTile(
-                    leading: CountdownTimer(
+                  Tileheading(
+                    timer: CountdownTimer(
                       initialTime: 30,
                       onTimerEnd: onTimerEnd,
                     ),
-                    title: Text("Game 1"),
-                    subtitle:
-                        Text("Test $currentTest of 2 - Level $currentLevel"),
-                    trailing: Text("AWM"),
+                    title: "Game 1",
+                    subtitle: "Test $currentTest of 2 - Level $currentLevel",
+                    trailing: "AWM",
                   ),
                   const SizedBox(height: 20),
                   if (!showPictures)
