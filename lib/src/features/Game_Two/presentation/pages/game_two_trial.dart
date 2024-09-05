@@ -49,6 +49,20 @@ class _GameTwoTrialState extends State<GameTwoTrial> {
     print("Timer has ended!");
   }
 
+  void retryTrials() {
+    setState(() {
+      initGame();
+      currentTrial = 1;
+    });
+  }
+
+  void nextTrial() {
+    setState(() {
+      initGame();
+      currentTrial += 1;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     if (items.isEmpty) gameOver = true;
@@ -73,7 +87,7 @@ class _GameTwoTrialState extends State<GameTwoTrial> {
                   onTimerEnd: onTimerEnd,
                 ),
                 title: "Game 2",
-                subtitle: "Trial $currentTrial of 2 - Level $currentLevel",
+                subtitle: "Trial $currentTrial of 4",
                 trailing: "ADT",
               ),
               const SizedBox(height: 20),
@@ -96,8 +110,8 @@ class _GameTwoTrialState extends State<GameTwoTrial> {
               const SizedBox(height: 20),
               // Choices and Destinations
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
                     height: 430,
@@ -142,13 +156,34 @@ class _GameTwoTrialState extends State<GameTwoTrial> {
                     ),
                   ),
                   if (gameOver) ...[
-                    const Text("DONE"),
-                    ElevatedButton(
-                      onPressed: () {
-                        _showResults(context);
-                      },
-                      child: const Text("Submit"),
-                    ),
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      color: Colors.orange,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text("DONE"),
+                          ElevatedButton(
+                            onPressed: () {
+                              _showResults(context);
+                            },
+                            child: const Text("Submit"),
+                          ),
+                          ElevatedButton(
+                              onPressed: () {
+                                nextTrial();
+                              },
+                              child: const Text("Next Trial")),
+                          if (currentTrial == 4)
+                            ElevatedButton(
+                                onPressed: () {
+                                  retryTrials();
+                                },
+                                child: const Text("Reset Trials")),
+                        ],
+                      ),
+                    )
                   ],
                   const SizedBox(width: 20),
                   Container(
