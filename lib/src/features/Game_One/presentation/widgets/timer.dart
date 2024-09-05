@@ -59,13 +59,16 @@ class _CountdownTimerState extends State<CountdownTimer> {
       width: 400,
       context: context,
       dialogType: DialogType.warning,
-      headerAnimationLoop: false,
+      headerAnimationLoop: true,
       animType: AnimType.bottomSlide,
       title: 'Time is Up!',
       desc: 'Retry and answer more quickly.',
-      buttonsTextStyle: const TextStyle(color: Colors.black),
-      showCloseIcon: true,
-      btnCancelOnPress: () {},
+      buttonsTextStyle: const TextStyle(color: Colors.white, fontSize: 14),
+      showCloseIcon: false,
+      dismissOnTouchOutside: false,
+      btnCancelOnPress: () {
+        Navigator.pop(context);
+      },
       btnOkOnPress: () {},
     ).show();
   }
