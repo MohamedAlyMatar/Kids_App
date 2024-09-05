@@ -3,6 +3,9 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:kids_app/src/core/utils/app_colors.dart';
 import 'dart:core';
 
+import 'package:kids_app/src/core/widgets/tileHeading.dart';
+import 'package:kids_app/src/features/Game_One/presentation/widgets/timer.dart';
+
 class GameTwoTrial extends StatefulWidget {
   @override
   State<GameTwoTrial> createState() => _GameTwoTrialState();
@@ -11,6 +14,9 @@ class GameTwoTrial extends StatefulWidget {
 class _GameTwoTrialState extends State<GameTwoTrial> {
   List<ItemModel> items = [];
   List<ItemModel> items2 = [];
+
+  int currentLevel = 1;
+  int currentTrial = 1;
 
   int score = 0;
   int mistakes = 0;
@@ -39,6 +45,10 @@ class _GameTwoTrialState extends State<GameTwoTrial> {
     items2.shuffle();
   }
 
+  void onTimerEnd() {
+    print("Timer has ended!");
+  }
+
   @override
   Widget build(BuildContext context) {
     if (items.isEmpty) gameOver = true;
@@ -57,63 +67,32 @@ class _GameTwoTrialState extends State<GameTwoTrial> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Game Bar
-              Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: AppColors.primaryColor,
-                  borderRadius: BorderRadius.circular(10),
+              Tileheading(
+                timer: CountdownTimer(
+                  initialTime: 30,
+                  onTimerEnd: onTimerEnd,
                 ),
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Game 2 - Trial 1 of 4",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-                    Text(
-                      "ADT",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ],
-                ),
+                title: "Game 2",
+                subtitle: "Trial $currentTrial of 2 - Level $currentLevel",
+                trailing: "ADT",
               ),
+              const SizedBox(height: 20),
               // Game Score
-              Text.rich(TextSpan(children: [
-                const TextSpan(
-                    text: "Score: ",
-                    style: TextStyle(
-                        color: Colors.green,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 30.0)),
-                TextSpan(
-                    text: "$score",
-                    style: const TextStyle(
-                        color: Colors.green,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 30.0)),
-              ])),
-              Text.rich(TextSpan(children: [
-                const TextSpan(
-                    text: "Mistakes: ",
-                    style: TextStyle(
-                        color: Colors.green,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 30.0)),
-                TextSpan(
-                    text: "$mistakes",
-                    style: const TextStyle(
-                        color: Colors.green,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 30.0)),
-              ])),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text("Score: $score",
+                      style: const TextStyle(
+                          color: Colors.green,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20.0)),
+                  Text("Mistakes: $mistakes",
+                      style: const TextStyle(
+                          color: Colors.red,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20.0)),
+                ],
+              ),
               const SizedBox(height: 20),
               // Choices and Destinations
               Row(
@@ -162,13 +141,15 @@ class _GameTwoTrialState extends State<GameTwoTrial> {
                       }).toList(),
                     ),
                   ),
-                  if (gameOver) const Text("Game Over"),
-                  ElevatedButton(
-                    onPressed: () {
-                      _showResults(context);
-                    },
-                    child: const Text("Submit"),
-                  ),
+                  if (gameOver) ...[
+                    const Text("DONE"),
+                    ElevatedButton(
+                      onPressed: () {
+                        _showResults(context);
+                      },
+                      child: const Text("Submit"),
+                    ),
+                  ],
                   const SizedBox(width: 20),
                   Container(
                     height: 430,

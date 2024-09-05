@@ -62,8 +62,8 @@ class _CountdownTimerState extends State<CountdownTimer> {
   @override
   Widget build(BuildContext context) {
     return Text(
-      "Countdown: ${remainingTime ~/ 60}:${(remainingTime % 60).toString().padLeft(2, '0')}",
-      style: const TextStyle(fontSize: 16),
+      "${remainingTime ~/ 60}:${(remainingTime % 60).toString().padLeft(2, '0')}",
+      style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
     );
   }
 }
