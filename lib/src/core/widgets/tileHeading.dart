@@ -10,6 +10,7 @@ class Tileheading extends StatelessWidget {
   String trailing;
 
   Tileheading({
+    super.key,
     required this.timer,
     required this.title,
     required this.subtitle,

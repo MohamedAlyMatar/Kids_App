@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:kids_app/src/core/utils/app_colors.dart';
+import 'dart:core';
 
 class GameTwoTrial extends StatefulWidget {
   @override
@@ -10,8 +12,10 @@ class _GameTwoTrialState extends State<GameTwoTrial> {
   List<ItemModel> items = [];
   List<ItemModel> items2 = [];
 
-  late int score;
+  int score = 0;
+  int mistakes = 0;
   late bool gameOver;
+  late bool shake = false;
 
   @override
   void initState() {
@@ -96,6 +100,20 @@ class _GameTwoTrialState extends State<GameTwoTrial> {
                         fontWeight: FontWeight.bold,
                         fontSize: 30.0)),
               ])),
+              Text.rich(TextSpan(children: [
+                const TextSpan(
+                    text: "Mistakes: ",
+                    style: TextStyle(
+                        color: Colors.green,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 30.0)),
+                TextSpan(
+                    text: "$mistakes",
+                    style: const TextStyle(
+                        color: Colors.green,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 30.0)),
+              ])),
               const SizedBox(height: 20),
               // Choices and Destinations
               Row(
@@ -125,13 +143,13 @@ class _GameTwoTrialState extends State<GameTwoTrial> {
                             ),
                             feedback: Icon(
                               item.icon,
-                              color: Colors.teal,
+                              color: Colors.black,
                               size: 60,
                             ),
                             child: item.matched
                                 ? Icon(
                                     item.icon,
-                                    color: Colors.teal,
+                                    color: Colors.greenAccent,
                                     size: 60,
                                   )
                                 : Icon(
@@ -144,7 +162,7 @@ class _GameTwoTrialState extends State<GameTwoTrial> {
                       }).toList(),
                     ),
                   ),
-                  if (gameOver) Text("Game Over"),
+                  if (gameOver) const Text("Game Over"),
                   ElevatedButton(
                     onPressed: () {
                       _showResults(context);
@@ -170,8 +188,17 @@ class _GameTwoTrialState extends State<GameTwoTrial> {
                                 score += 10;
                               } else {
                                 score -= 5;
+                                mistakes += 1;
+                                shake = true;
+
+                                // Reset shake after a short delay
+                                Future.delayed(
+                                    const Duration(milliseconds: 500), () {
+                                  setState(() {
+                                    shake = false;
+                                  });
+                                });
                               }
-                              item.accepting = false;
                             });
                           },
                           onWillAccept: (receivedItem) {
@@ -188,7 +215,8 @@ class _GameTwoTrialState extends State<GameTwoTrial> {
                           builder: (context, acceptedItems, rejectedItems) =>
                               Container(
                             decoration: BoxDecoration(
-                              color: item.accepting ? Colors.red : Colors.white,
+                              color:
+                                  item.accepting ? Colors.white : Colors.white,
                               borderRadius: BorderRadius.circular(10),
                             ),
                             margin: const EdgeInsets.all(10),
@@ -197,7 +225,8 @@ class _GameTwoTrialState extends State<GameTwoTrial> {
                             width: 80,
                             alignment: Alignment.center,
                             child: item.matched
-                                ? Icon(item.icon, color: Colors.teal, size: 60)
+                                ? Icon(item.icon,
+                                    color: Colors.greenAccent, size: 60)
                                 : Text(
                                     item.name,
                                     style: const TextStyle(
@@ -209,7 +238,7 @@ class _GameTwoTrialState extends State<GameTwoTrial> {
                         );
                       }).toList(),
                     ),
-                  ),
+                  ).animate(target: shake == true ? 1.0 : 0.0).shake(),
                 ],
               ),
               const SizedBox(height: 20),

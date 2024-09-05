@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:kids_app/src/core/utils/app_colors.dart';
-import 'package:kids_app/src/core/utils/assets_manager.dart';
 import 'package:kids_app/src/core/widgets/button1.dart';
 import 'package:kids_app/src/core/widgets/textDesc.dart';
 import 'package:kids_app/src/core/widgets/tileHeading.dart';
 import 'package:kids_app/src/features/Game_One/data/datasources/img_list.dart';
 import 'package:kids_app/src/features/Game_One/presentation/widgets/audio_player.dart';
 import 'package:kids_app/src/features/Game_One/presentation/widgets/timer.dart';
-import 'package:kids_app/src/config/routes/app_routes.dart';
-import 'package:audioplayers/audioplayers.dart';
 
 class GameOneTest extends StatefulWidget {
   @override

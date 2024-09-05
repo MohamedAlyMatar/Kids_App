@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:kids_app/src/features/Authentication/presentation/widgets/sign_in_form.dart';
 import 'package:kids_app/src/features/Authentication/presentation/widgets/sign_up_form.dart';
 
 class SignUpScreen extends StatelessWidget {
