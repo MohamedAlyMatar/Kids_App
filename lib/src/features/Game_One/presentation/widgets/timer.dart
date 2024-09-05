@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 
@@ -38,7 +39,8 @@ class _CountdownTimerState extends State<CountdownTimer> {
         } else {
           _timer.cancel();
           widget.onTimerEnd();
-          _playAlertSound(); // Play sound after timer ends
+          _playAlertSound();
+          _showDialog();
         }
       });
     });
@@ -50,6 +52,22 @@ class _CountdownTimerState extends State<CountdownTimer> {
     } catch (e) {
       print("Error playing audio: $e");
     }
+  }
+
+  void _showDialog() {
+    AwesomeDialog(
+      width: 400,
+      context: context,
+      dialogType: DialogType.warning,
+      headerAnimationLoop: false,
+      animType: AnimType.bottomSlide,
+      title: 'Time is Up!',
+      desc: 'Retry and answer more quickly.',
+      buttonsTextStyle: const TextStyle(color: Colors.black),
+      showCloseIcon: true,
+      btnCancelOnPress: () {},
+      btnOkOnPress: () {},
+    ).show();
   }
 
   @override

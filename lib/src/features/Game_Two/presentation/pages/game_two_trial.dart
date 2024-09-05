@@ -83,7 +83,7 @@ class _GameTwoTrialState extends State<GameTwoTrial> {
               // Game Bar
               Tileheading(
                 timer: CountdownTimer(
-                  initialTime: 30,
+                  initialTime: 5,
                   onTimerEnd: onTimerEnd,
                 ),
                 title: "Game 2",
@@ -114,8 +114,11 @@ class _GameTwoTrialState extends State<GameTwoTrial> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
-                    height: 430,
-                    color: Colors.red,
+                    height: 405,
+                    decoration: const BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                    ),
                     child: Wrap(
                       direction: Axis.vertical,
                       spacing: 0.1,
@@ -158,12 +161,17 @@ class _GameTwoTrialState extends State<GameTwoTrial> {
                   if (gameOver) ...[
                     Container(
                       padding: const EdgeInsets.all(10),
-                      color: Colors.orange,
+                      decoration: BoxDecoration(
+                        color: Colors.orange,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Text("DONE"),
+                          const Text("DONE",
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold)),
                           ElevatedButton(
                             onPressed: () {
                               _showResults(context);
@@ -187,8 +195,11 @@ class _GameTwoTrialState extends State<GameTwoTrial> {
                   ],
                   const SizedBox(width: 20),
                   Container(
-                    height: 430,
-                    color: Colors.blue,
+                    height: 405,
+                    decoration: const BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                    ),
                     child: Wrap(
                       direction: Axis.vertical,
                       alignment: WrapAlignment.start,
