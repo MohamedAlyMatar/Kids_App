@@ -7,6 +7,9 @@ import 'package:kids_app/src/features/Game_One/presentation/bloc/game_one_bloc.d
 import 'package:kids_app/src/features/Game_One/presentation/pages/game_one_test.dart';
 import 'package:kids_app/src/features/Game_One/presentation/pages/game_one_description.dart';
 import 'package:kids_app/src/features/Game_One/presentation/pages/game_one_trial.dart';
+import 'package:kids_app/src/features/Game_Three/presentation/pages/game_three_description.dart';
+import 'package:kids_app/src/features/Game_Three/presentation/pages/game_three_test.dart';
+import 'package:kids_app/src/features/Game_Three/presentation/pages/game_three_trial.dart';
 import 'package:kids_app/src/features/Game_Two/presentation/bloc/game_two_bloc.dart';
 import 'package:kids_app/src/features/Game_Two/presentation/pages/game_two_description.dart';
 import 'package:kids_app/src/features/Game_Two/presentation/pages/game_two_familiarize.dart';
@@ -38,13 +41,19 @@ class Routes {
   static const String gameTwoFam = "/gameTwoFam";
   static const String gameTwoTrial = "/gameTwoTrial";
   static const String gameTwoTest = "/gameTwoTest";
+
+  // Game Three Routes
+  static const String gameThreeDesc = "/gameThreeDesc";
+  static const String gameThreeFam = "/gameThreeFam";
+  static const String gameThreeTrial = "/gameThreeTrial";
+  static const String gameThreeTest = "/gameThreeTest";
 }
 
 // Genrated Routes
 class AppRoutes {
   static Route? onGenerateRoute(RouteSettings routeSettings) {
     switch (routeSettings.name) {
-      // Splash Screen
+      // Splash Screen ----------------------------------------
       case Routes.initialRoute:
         return MaterialPageRoute(
             builder: (contect) => BlocProvider(
@@ -69,7 +78,7 @@ class AppRoutes {
                 create: (context) => AuthenticationBloc(),
                 child: SignUpScreen()));
 
-      // Games Menu Routes
+      // Games Menu Routes ----------------------------------------
       case Routes.gameInstruction:
         return MaterialPageRoute(
             builder: (contect) => BlocProvider(
@@ -80,7 +89,7 @@ class AppRoutes {
             builder: (contect) => BlocProvider(
                 create: (context) => GamesBloc(), child: GamesScreen()));
 
-      // Game One Routes
+      // Game One Routes ----------------------------------------
       case Routes.gameOneDesc:
         return MaterialPageRoute(
           builder: (contect) => BlocProvider(
@@ -99,7 +108,7 @@ class AppRoutes {
               create: (context) => GameOneBloc(), child: GameOneTest()),
         );
 
-      // Game Two Routes
+      // Game Two Routes ----------------------------------------
       case Routes.gameTwoDesc:
         return MaterialPageRoute(
           builder: (contect) => BlocProvider(
@@ -123,6 +132,32 @@ class AppRoutes {
           builder: (contect) => BlocProvider(
               create: (context) => GameTwoBloc(), child: FamiliarizeScreen()),
         );
+
+      // Game Three Routes ----------------------------------------
+      case Routes.gameThreeDesc:
+        return MaterialPageRoute(
+          builder: (contect) => BlocProvider(
+              create: (context) => GameTwoBloc(),
+              child: GameThreeDescription()),
+        );
+
+      case Routes.gameThreeTrial:
+        return MaterialPageRoute(
+          builder: (contect) => BlocProvider(
+              create: (context) => GameTwoBloc(), child: GameThreeTrial()),
+        );
+
+      case Routes.gameThreeTest:
+        return MaterialPageRoute(
+          builder: (contect) => BlocProvider(
+              create: (context) => GameTwoBloc(), child: GameThreeTest()),
+        );
+
+      // case Routes.gameThreeFam:
+      //   return MaterialPageRoute(
+      //     builder: (contect) => BlocProvider(
+      //         create: (context) => GameTwoBloc(), child: FamiliarizeScreen()),
+      //   );
 
       default:
         return undefinedRoute();

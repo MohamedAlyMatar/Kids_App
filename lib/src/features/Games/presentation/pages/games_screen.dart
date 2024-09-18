@@ -81,8 +81,10 @@ class _GamesScreenState extends State<GamesScreen> {
                     GameTile("Game 2",
                         () => Navigator.pushNamed(context, Routes.gameTwoDesc)),
                     const SizedBox(height: 16),
-                    GameTile("Game 3",
-                        () => Navigator.pushNamed(context, Routes.gameOneDesc)),
+                    GameTile(
+                        "Game 3",
+                        () =>
+                            Navigator.pushNamed(context, Routes.gameThreeDesc)),
                     const SizedBox(height: 16),
                     GameTile("Game 4",
                         () => Navigator.pushNamed(context, Routes.gameOneDesc)),
