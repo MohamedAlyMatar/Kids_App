@@ -44,12 +44,14 @@ class _GameThreeTestOneState extends State<GameThreeTestOne> {
     setState(() {
       isAnswerSubmitted = true;
       int correctCount = selectedPictureIndices
-          .where((index) => imgTargets.values.toList()[index] == globalTarget)
+          .where((index) => imgSounds.values.toList()[index] == globalTarget)
           .length;
       resultMessage = "You got $correctCount correct images!";
     });
   }
 
+  String sound = 'do';
+  List<String> sounds = ['do', 're', 'si'];
   void nextTrial() {
     if (currentTest < 2) {
       setState(() {
@@ -75,7 +77,7 @@ class _GameThreeTestOneState extends State<GameThreeTestOne> {
 
   bool checkAnswer() {
     return selectedPictureIndices
-            .where((index) => imgTargets.values.toList()[index] == globalTarget)
+            .where((index) => imgSounds.values.toList()[index] == globalTarget)
             .length ==
         1;
   }
@@ -112,7 +114,7 @@ class _GameThreeTestOneState extends State<GameThreeTestOne> {
                   const SizedBox(height: 20),
                   if (!showPictures)
                     AudioPlayerWidget(
-                      audioPath: 'audios/mango.mp3',
+                      audioPath: 'audios/$sound.mp3',
                       onAudioComplete: onAudioComplete,
                     ),
                   if (showPictures) ...[
@@ -124,16 +126,16 @@ class _GameThreeTestOneState extends State<GameThreeTestOne> {
                         crossAxisSpacing: 10,
                         childAspectRatio: 3,
                       ),
-                      itemCount: imgTargets.length,
+                      itemCount: imgSounds.length,
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
                         return InkWell(
                           onTap: () => selectPicture(index),
                           child: Container(
-                            padding: EdgeInsets.all(5),
+                            padding: const EdgeInsets.all(5),
                             decoration: BoxDecoration(
                               color: isAnswerSubmitted
-                                  ? (imgTargets.values.toList()[index] ==
+                                  ? (imgSounds.values.toList()[index] ==
                                           globalTarget
                                       ? Colors.green
                                       : selectedPictureIndices.contains(index)
@@ -145,7 +147,7 @@ class _GameThreeTestOneState extends State<GameThreeTestOne> {
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Image.asset(
-                              imgTargets.keys.toList()[index],
+                              imgSounds.keys.toList()[index],
                               width: 50,
                             ),
                           ),

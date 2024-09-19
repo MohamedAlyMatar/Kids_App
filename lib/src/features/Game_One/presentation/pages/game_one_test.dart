@@ -44,12 +44,14 @@ class _GameOneTestState extends State<GameOneTest> {
     setState(() {
       isAnswerSubmitted = true;
       int correctCount = selectedPictureIndices
-          .where((index) => imgTargets.values.toList()[index] == globalTarget)
+          .where((index) => imgFruits.values.toList()[index] == globalTarget)
           .length;
       resultMessage = "You got $correctCount correct images!";
     });
   }
 
+  int sound = 0;
+  List<String> sounds = ['do', 're', 'si'];
   void nextTrial() {
     if (currentTest < 2) {
       setState(() {
@@ -75,7 +77,7 @@ class _GameOneTestState extends State<GameOneTest> {
 
   bool checkAnswer() {
     return selectedPictureIndices
-            .where((index) => imgTargets.values.toList()[index] == globalTarget)
+            .where((index) => imgFruits.values.toList()[index] == globalTarget)
             .length ==
         1;
   }
@@ -105,52 +107,48 @@ class _GameOneTestState extends State<GameOneTest> {
                       initialTime: 30,
                       onTimerEnd: onTimerEnd,
                     ),
-                    title: "Game 1",
-                    subtitle: "Test $currentTest of 2 - Level $currentLevel",
-                    trailing: "AWM",
+                    title: "Game 3 - Test 1",
+                    subtitle: "Trial $currentTest of 8 - Level $currentLevel",
+                    trailing: "TPT",
                   ),
                   const SizedBox(height: 20),
                   if (!showPictures)
                     AudioPlayerWidget(
-                      audioPath: 'audios/mango.mp3',
+                      audioPath: 'audios/${sounds.elementAt(sound)}.mp3',
                       onAudioComplete: onAudioComplete,
                     ),
                   if (showPictures) ...[
-                    GridView.builder(
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
-                        mainAxisSpacing: 10,
-                        crossAxisSpacing: 10,
-                        childAspectRatio: 3,
+                    Center(
+                      child: Wrap(
+                        spacing: 10, // horizontally spacing
+                        runSpacing: 10, // vertically spacing
+                        children: List.generate(2, (index) {
+                          return InkWell(
+                            onTap: () => selectPicture(index),
+                            child: Container(
+                              padding: const EdgeInsets.all(5),
+                              decoration: BoxDecoration(
+                                color: isAnswerSubmitted
+                                    ? (imgFruits.values.toList()[index] ==
+                                            globalTarget
+                                        ? Colors.green
+                                        : selectedPictureIndices.contains(index)
+                                            ? Colors.red
+                                            : Colors.grey)
+                                    : selectedPictureIndices.contains(index)
+                                        ? Colors.blue
+                                        : Colors.grey,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              width: 100,
+                              height: 100,
+                              child: Image.asset(
+                                imgFruits.keys.toList()[index],
+                              ),
+                            ),
+                          );
+                        }),
                       ),
-                      itemCount: imgTargets.length,
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        return InkWell(
-                          onTap: () => selectPicture(index),
-                          child: Container(
-                            padding: EdgeInsets.all(5),
-                            decoration: BoxDecoration(
-                              color: isAnswerSubmitted
-                                  ? (imgTargets.values.toList()[index] ==
-                                          globalTarget
-                                      ? Colors.green
-                                      : selectedPictureIndices.contains(index)
-                                          ? Colors.red
-                                          : Colors.grey)
-                                  : selectedPictureIndices.contains(index)
-                                      ? Colors.blue
-                                      : Colors.grey,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Image.asset(
-                              imgTargets.keys.toList()[index],
-                              width: 50,
-                            ),
-                          ),
-                        );
-                      },
                     ),
                     const SizedBox(height: 20),
                     Button1(textButton: "Submit", onPressed: submitAnswer),

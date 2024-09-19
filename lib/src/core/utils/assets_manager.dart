@@ -12,6 +12,9 @@ class ImgAssets {
   static const String mango1 = '$imgPath/mango_1.png';
   static const String mango2 = '$imgPath/mango_2.png';
   static const String apple = '$imgPath/apple.png';
+
+  static const String piano = '$imgPath/piano.png';
+  static const String drum = '$imgPath/drum.png';
 }
 
 const String logoPath = 'assets/logos';

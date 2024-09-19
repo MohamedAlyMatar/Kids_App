@@ -6,6 +6,8 @@ import 'package:kids_app/src/core/utils/assets_manager.dart';
 import 'package:kids_app/src/core/widgets/button1.dart';
 import 'package:kids_app/src/core/widgets/textDesc.dart';
 import 'package:kids_app/src/core/widgets/tileHeading.dart';
+import 'package:kids_app/src/features/Game_One/data/datasources/img_list.dart';
+import 'package:kids_app/src/features/Game_One/presentation/widgets/audio_player.dart';
 import 'package:kids_app/src/features/Game_One/presentation/widgets/timer.dart';
 
 class GameThreeTrialOne extends StatefulWidget {
@@ -14,63 +16,26 @@ class GameThreeTrialOne extends StatefulWidget {
 }
 
 class _GameThreeTrialOneState extends State<GameThreeTrialOne> {
-  int currentTrial = 1;
+  int currentTest = 1;
+  int currentLevel = 1;
   String resultMessage = "";
-  bool isAudioPlaying = false;
   bool showPictures = false;
-  late AudioPlayer audioPlayer;
   List<int> selectedPictureIndices = [];
   bool isAnswerSubmitted = false;
-  final List<int> correctAnswers = [
-    0,
-    2
-  ]; // Example correct answers for trial 1
 
-  @override
-  void initState() {
-    super.initState();
-    audioPlayer = AudioPlayer();
-    audioPlayer.setSourceAsset('assets/audios/mango.mp3');
-  }
-
-  @override
-  void dispose() {
-    audioPlayer.dispose();
-    super.dispose();
-  }
-
-  void playAudio() async {
+  void onAudioComplete() {
     setState(() {
-      isAudioPlaying = true;
-      resultMessage = "Audio is playing, listen carefully...";
-      showPictures = false;
-      selectedPictureIndices.clear(); // Reset selections
-      isAnswerSubmitted = false; // Allow new selection
+      showPictures = true;
+      resultMessage = "Choose the correct images.";
     });
-
-    try {
-      await audioPlayer.play(AssetSource('audios/mango.mp3'));
-
-      audioPlayer.onPlayerComplete.listen((_) {
-        if (mounted) {
-          setState(() {
-            isAudioPlaying = false;
-            showPictures = true;
-            resultMessage = "Choose the correct images.";
-          });
-        }
-      });
-    } catch (e) {
-      setState(() {
-        isAudioPlaying = false;
-        resultMessage = "Error playing audio: $e";
-      });
-    }
   }
 
+  String answer = "";
   void selectPicture(int index) {
     if (!isAnswerSubmitted) {
       setState(() {
+        answer = imgSounds.values.toList()[index];
+        print(answer);
         if (selectedPictureIndices.contains(index)) {
           selectedPictureIndices.remove(index);
         } else {
@@ -80,21 +45,28 @@ class _GameThreeTrialOneState extends State<GameThreeTrialOne> {
     }
   }
 
+  String globalTarget = "piano";
   void submitAnswer() {
     setState(() {
       isAnswerSubmitted = true;
-      int correctCount = selectedPictureIndices
-          .where((index) => correctAnswers.contains(index))
-          .length;
-      resultMessage =
-          "You got $correctCount out of ${correctAnswers.length} correct!";
+      // int correctCount = selectedPictureIndices
+      //     .where((index) => imgSounds.values.toList()[index] == globalTarget)
+      //     .length;
+
+      if (answer == globalTarget) {
+        resultMessage = "Correct Answer!";
+      } else {
+        resultMessage = "Wrong Answer :(";
+      }
     });
   }
 
+  int sound = 0;
+  List<String> sounds = ['do', 're', 'si'];
   void nextTrial() {
-    if (currentTrial < 3) {
+    if (currentTest < 2) {
       setState(() {
-        currentTrial++;
+        currentTest++;
         resultMessage = "";
         showPictures = false;
         selectedPictureIndices.clear();
@@ -103,14 +75,22 @@ class _GameThreeTrialOneState extends State<GameThreeTrialOne> {
     }
   }
 
-  void retryTrials() {
+  void startNextLevel() {
     setState(() {
-      currentTrial = 1;
+      currentLevel++;
+      currentTest = 1;
       resultMessage = "";
       showPictures = false;
       selectedPictureIndices.clear();
       isAnswerSubmitted = false;
     });
+  }
+
+  bool checkAnswer() {
+    return selectedPictureIndices
+            .where((index) => imgSounds.values.toList()[index] == globalTarget)
+            .length ==
+        1;
   }
 
   void onTimerEnd() {
@@ -134,98 +114,52 @@ class _GameThreeTrialOneState extends State<GameThreeTrialOne> {
               child: Column(
                 children: [
                   Tileheading(
-                      timer: CountdownTimer(
-                          initialTime: 30, onTimerEnd: onTimerEnd),
-                      title: "Game 3",
-                      subtitle: "Trial $currentTrial of 3",
-                      trailing: "TPT"),
+                    timer: CountdownTimer(
+                      initialTime: 30,
+                      onTimerEnd: onTimerEnd,
+                    ),
+                    title: "Game 3 - Test 1",
+                    subtitle: "Trial $currentTest of 8 - Level $currentLevel",
+                    trailing: "TPT",
+                  ),
                   const SizedBox(height: 20),
-                  if (!isAudioPlaying && !showPictures) ...[
-                    Image.asset(
-                      ImgAssets.play,
-                      width: 100,
+                  if (!showPictures)
+                    AudioPlayerWidget(
+                      audioPath: 'audios/${sounds.elementAt(sound)}.mp3',
+                      onAudioComplete: onAudioComplete,
                     ),
-                    const SizedBox(height: 20),
-                    TextDesc(textDesc: "Click play audio to begin"),
-                    const SizedBox(height: 20),
-                    Button1(textButton: "Play Audio", onPressed: playAudio),
-                  ] else if (isAudioPlaying) ...[
-                    Image.asset(
-                      ImgAssets.listen,
-                      width: 100,
-                    ),
-                    const SizedBox(height: 20),
-                    const Text(
-                      "Audio is playing, listen carefully...",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.red,
-                      ),
-                    )
-                  ],
                   if (showPictures) ...[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        InkWell(
-                          onTap: () => selectPicture(0),
-                          child: Container(
-                            padding: const EdgeInsets.all(5),
-                            decoration: BoxDecoration(
-                              color: isAnswerSubmitted
-                                  ? (correctAnswers.contains(0)
-                                      ? Colors.green
-                                      : selectedPictureIndices.contains(0)
-                                          ? Colors.red
-                                          : Colors.grey)
-                                  : selectedPictureIndices.contains(0)
-                                      ? Colors.blue
-                                      : Colors.grey,
-                              borderRadius: BorderRadius.circular(10),
+                    Center(
+                      child: Wrap(
+                        spacing: 10, // horizontal spacing
+                        runSpacing: 10, // vertical spacing
+                        children: List.generate(2, (index) {
+                          return InkWell(
+                            onTap: () => selectPicture(index),
+                            child: Container(
+                              padding: const EdgeInsets.all(5),
+                              decoration: BoxDecoration(
+                                color: isAnswerSubmitted
+                                    ? (imgSounds.values.toList()[index] ==
+                                            globalTarget
+                                        ? Colors.green
+                                        : selectedPictureIndices.contains(index)
+                                            ? Colors.red
+                                            : Colors.grey)
+                                    : selectedPictureIndices.contains(index)
+                                        ? Colors.blue
+                                        : Colors.grey,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              width: 100,
+                              height: 100,
+                              child: Image.asset(
+                                imgSounds.keys.toList()[index],
+                              ),
                             ),
-                            child: Image.asset(ImgAssets.mango1, width: 100),
-                          ),
-                        ),
-                        InkWell(
-                          onTap: () => selectPicture(1),
-                          child: Container(
-                            padding: EdgeInsets.all(5),
-                            decoration: BoxDecoration(
-                              color: isAnswerSubmitted
-                                  ? (correctAnswers.contains(1)
-                                      ? Colors.green
-                                      : selectedPictureIndices.contains(1)
-                                          ? Colors.red
-                                          : Colors.grey)
-                                  : selectedPictureIndices.contains(1)
-                                      ? Colors.blue
-                                      : Colors.grey,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Image.asset(ImgAssets.apple, width: 100),
-                          ),
-                        ),
-                        InkWell(
-                          onTap: () => selectPicture(2),
-                          child: Container(
-                            padding: EdgeInsets.all(5),
-                            decoration: BoxDecoration(
-                              color: isAnswerSubmitted
-                                  ? (correctAnswers.contains(2)
-                                      ? Colors.green
-                                      : selectedPictureIndices.contains(2)
-                                          ? Colors.red
-                                          : Colors.grey)
-                                  : selectedPictureIndices.contains(2)
-                                      ? Colors.blue
-                                      : Colors.grey,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Image.asset(ImgAssets.mango2, width: 100),
-                          ),
-                        ),
-                      ],
+                          );
+                        }),
+                      ),
                     ),
                     const SizedBox(height: 20),
                     Button1(textButton: "Submit", onPressed: submitAnswer),
@@ -233,24 +167,32 @@ class _GameThreeTrialOneState extends State<GameThreeTrialOne> {
                     Text(resultMessage),
                     const SizedBox(height: 20),
                     if (resultMessage != "Choose the correct images." &&
-                        currentTrial != 3)
-                      Button1(textButton: "Next Trial", onPressed: nextTrial),
+                        currentTest != 2)
+                      Button1(textButton: "Next Test", onPressed: nextTrial),
                   ],
                 ],
               ),
             ),
             const SizedBox(height: 20),
-            if (!isAudioPlaying && currentTrial == 3)
+            if (!showPictures && currentTest == 2 && checkAnswer()) ...[
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Button1(textButton: "Retry Trial", onPressed: retryTrials),
+                  TextDesc(textDesc: "You passed this level!"),
                   Button1(
-                      textButton: "Ready? Start the test now",
-                      onPressed: () =>
-                          Navigator.pushNamed(context, Routes.gameOneTest)),
+                    textButton: "Start the Next Level",
+                    onPressed: startNextLevel,
+                  ),
                 ],
               ),
+            ] else ...[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  TextDesc(textDesc: "Sorry you didn't meet the minimum score"),
+                ],
+              ),
+            ]
           ],
         ),
       ),
