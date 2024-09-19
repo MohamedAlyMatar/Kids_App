@@ -35,7 +35,7 @@ class GameThreeDescription extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  TextTitle1(textTitle: "Game 3: Auditory Working Memory"),
+                  TextTitle1(textTitle: "Game 3: Teniporal Processing Test"),
                   TextTitle2(textSubTitle: "Objective"),
                   TextDesc(
                       textDesc:
@@ -43,7 +43,7 @@ class GameThreeDescription extends StatelessWidget {
                   TextTitle2(textSubTitle: "Instructions"),
                   TextDesc(
                       textDesc:
-                          "• Click the button to play the audio and listhen carfully, and the child must listen carefully. \n• After the audio finishes, the child has to choose the correct picture related to what they heard.\n• The kid will have 3 trials before taking the main test."),
+                          "• Click the button to play the audio and listen carefully, and the child must listen carefully. \n• After the audio finishes, the child has to choose the correct picture related to what they heard.\n• The kid will have 3 trials before taking the main test."),
                 ],
               ),
             ),

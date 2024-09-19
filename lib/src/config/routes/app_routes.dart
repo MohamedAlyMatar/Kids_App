@@ -8,8 +8,8 @@ import 'package:kids_app/src/features/Game_One/presentation/pages/game_one_test.
 import 'package:kids_app/src/features/Game_One/presentation/pages/game_one_description.dart';
 import 'package:kids_app/src/features/Game_One/presentation/pages/game_one_trial.dart';
 import 'package:kids_app/src/features/Game_Three/presentation/pages/game_three_description.dart';
-import 'package:kids_app/src/features/Game_Three/presentation/pages/game_three_test.dart';
-import 'package:kids_app/src/features/Game_Three/presentation/pages/game_three_trial.dart';
+import 'package:kids_app/src/features/Game_Three/presentation/pages/game_three_test_one.dart';
+import 'package:kids_app/src/features/Game_Three/presentation/pages/game_three_trial_one.dart';
 import 'package:kids_app/src/features/Game_Two/presentation/bloc/game_two_bloc.dart';
 import 'package:kids_app/src/features/Game_Two/presentation/pages/game_two_description.dart';
 import 'package:kids_app/src/features/Game_Two/presentation/pages/game_two_familiarize.dart';
@@ -144,13 +144,13 @@ class AppRoutes {
       case Routes.gameThreeTrial:
         return MaterialPageRoute(
           builder: (contect) => BlocProvider(
-              create: (context) => GameTwoBloc(), child: GameThreeTrial()),
+              create: (context) => GameTwoBloc(), child: GameThreeTrialOne()),
         );
 
       case Routes.gameThreeTest:
         return MaterialPageRoute(
           builder: (contect) => BlocProvider(
-              create: (context) => GameTwoBloc(), child: GameThreeTest()),
+              create: (context) => GameTwoBloc(), child: GameThreeTestOne()),
         );
 
       // case Routes.gameThreeFam:

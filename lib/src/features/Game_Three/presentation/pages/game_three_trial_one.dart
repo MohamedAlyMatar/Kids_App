@@ -8,12 +8,12 @@ import 'package:kids_app/src/core/widgets/textDesc.dart';
 import 'package:kids_app/src/core/widgets/tileHeading.dart';
 import 'package:kids_app/src/features/Game_One/presentation/widgets/timer.dart';
 
-class GameThreeTrial extends StatefulWidget {
+class GameThreeTrialOne extends StatefulWidget {
   @override
-  _GameThreeTrialState createState() => _GameThreeTrialState();
+  _GameThreeTrialOneState createState() => _GameThreeTrialOneState();
 }
 
-class _GameThreeTrialState extends State<GameThreeTrial> {
+class _GameThreeTrialOneState extends State<GameThreeTrialOne> {
   int currentTrial = 1;
   String resultMessage = "";
   bool isAudioPlaying = false;

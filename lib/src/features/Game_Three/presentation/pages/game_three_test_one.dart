@@ -7,12 +7,12 @@ import 'package:kids_app/src/features/Game_One/data/datasources/img_list.dart';
 import 'package:kids_app/src/features/Game_One/presentation/widgets/audio_player.dart';
 import 'package:kids_app/src/features/Game_One/presentation/widgets/timer.dart';
 
-class GameThreeTest extends StatefulWidget {
+class GameThreeTestOne extends StatefulWidget {
   @override
-  _GameThreeTestState createState() => _GameThreeTestState();
+  _GameThreeTestOneState createState() => _GameThreeTestOneState();
 }
 
-class _GameThreeTestState extends State<GameThreeTest> {
+class _GameThreeTestOneState extends State<GameThreeTestOne> {
   int currentTest = 1;
   int currentLevel = 1;
   String resultMessage = "";
