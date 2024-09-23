@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:kids_app/src/core/utils/app_colors.dart';
@@ -277,24 +278,24 @@ class _GameTwoTrialState extends State<GameTwoTrial> {
   }
 
   void _showResults(BuildContext context) {
-    showDialog(
+    AwesomeDialog(
+      width: 400,
       context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text("Game Results"),
-          content: Text("Your final score is $score"),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                _saveUserResponses();
-              },
-              child: const Text("OK"),
-            ),
-          ],
-        );
+      dialogType: DialogType.success,
+      headerAnimationLoop: true,
+      animType: AnimType.bottomSlide,
+      title: 'Game Results',
+      desc: 'Your final score is $score',
+      buttonsTextStyle: const TextStyle(color: Colors.white, fontSize: 14),
+      showCloseIcon: false,
+      dismissOnTouchOutside: false,
+      btnCancelOnPress: () {
+        Navigator.pop(context);
       },
-    );
+      btnOkOnPress: () {
+        _saveUserResponses();
+      },
+    ).show();
   }
 
   void _saveUserResponses() {
