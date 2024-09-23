@@ -63,7 +63,7 @@ class _GameThreeTrialOneState extends State<GameThreeTrialOne> {
   int sound = 0;
   List<String> sounds = ['do', 're', 'si'];
   void nextTrial() {
-    if (currentTest < 2) {
+    if (currentTest < 8) {
       setState(() {
         currentTest++;
         resultMessage = "";
@@ -71,6 +71,7 @@ class _GameThreeTrialOneState extends State<GameThreeTrialOne> {
         selectedPictureIndices.clear();
         isAnswerSubmitted = false;
       });
+      timerKey.currentState?.resetTimer();
     }
   }
 
@@ -166,8 +167,7 @@ class _GameThreeTrialOneState extends State<GameThreeTrialOne> {
                     const SizedBox(height: 10),
                     Text(resultMessage),
                     const SizedBox(height: 20),
-                    if (resultMessage != "Choose the correct images." &&
-                        currentTest != 8)
+                    if (currentTest != 8)
                       Button1(textButton: "Next Test", onPressed: nextTrial),
                   ],
                 ],

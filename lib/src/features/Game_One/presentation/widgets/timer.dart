@@ -44,6 +44,11 @@ class CountdownTimerState extends State<CountdownTimer> {
     });
   }
 
+  void resetTimer() {
+    _timer.cancel();
+    remainingTime = widget.initialTime;
+  }
+
   void _playAlertSound() async {
     try {
       await audioPlayer.play(AssetSource('audios/mango.mp3'));
