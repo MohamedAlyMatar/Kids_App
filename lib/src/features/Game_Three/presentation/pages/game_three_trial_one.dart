@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:audioplayers/audioplayers.dart';
-import 'package:kids_app/src/config/routes/app_routes.dart';
 import 'package:kids_app/src/core/utils/app_colors.dart';
-import 'package:kids_app/src/core/utils/assets_manager.dart';
 import 'package:kids_app/src/core/widgets/button1.dart';
 import 'package:kids_app/src/core/widgets/textDesc.dart';
 import 'package:kids_app/src/core/widgets/tileHeading.dart';
@@ -22,12 +19,14 @@ class _GameThreeTrialOneState extends State<GameThreeTrialOne> {
   bool showPictures = false;
   List<int> selectedPictureIndices = [];
   bool isAnswerSubmitted = false;
+  final GlobalKey<CountdownTimerState> timerKey = GlobalKey();
 
   void onAudioComplete() {
     setState(() {
       showPictures = true;
       resultMessage = "Choose the correct images.";
     });
+    timerKey.currentState?.startTimer();
   }
 
   String answer = "";
@@ -115,6 +114,7 @@ class _GameThreeTrialOneState extends State<GameThreeTrialOne> {
                 children: [
                   Tileheading(
                     timer: CountdownTimer(
+                      key: timerKey,
                       initialTime: 30,
                       onTimerEnd: onTimerEnd,
                     ),
@@ -167,7 +167,7 @@ class _GameThreeTrialOneState extends State<GameThreeTrialOne> {
                     Text(resultMessage),
                     const SizedBox(height: 20),
                     if (resultMessage != "Choose the correct images." &&
-                        currentTest != 2)
+                        currentTest != 8)
                       Button1(textButton: "Next Test", onPressed: nextTrial),
                   ],
                 ],

@@ -14,10 +14,10 @@ class CountdownTimer extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _CountdownTimerState createState() => _CountdownTimerState();
+  CountdownTimerState createState() => CountdownTimerState();
 }
 
-class _CountdownTimerState extends State<CountdownTimer> {
+class CountdownTimerState extends State<CountdownTimer> {
   late int remainingTime;
   late Timer _timer;
   late AudioPlayer audioPlayer;
@@ -27,11 +27,9 @@ class _CountdownTimerState extends State<CountdownTimer> {
     super.initState();
     remainingTime = widget.initialTime;
     audioPlayer = AudioPlayer();
-
-    _startTimer();
   }
 
-  void _startTimer() {
+  void startTimer() {
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
         if (remainingTime > 0) {
@@ -40,7 +38,7 @@ class _CountdownTimerState extends State<CountdownTimer> {
           _timer.cancel();
           widget.onTimerEnd();
           _playAlertSound();
-          _showDialog();
+          showDialog();
         }
       });
     });
@@ -54,7 +52,7 @@ class _CountdownTimerState extends State<CountdownTimer> {
     }
   }
 
-  void _showDialog() {
+  void showDialog() {
     AwesomeDialog(
       width: 400,
       context: context,
