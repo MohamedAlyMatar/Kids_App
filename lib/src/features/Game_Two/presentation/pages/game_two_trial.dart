@@ -13,6 +13,7 @@ class GameTwoTrial extends StatefulWidget {
 }
 
 class _GameTwoTrialState extends State<GameTwoTrial> {
+  final GlobalKey<CountdownTimerState> timerKey = GlobalKey();
   List<ItemModel> items = [];
   List<ItemModel> items2 = [];
 
@@ -23,6 +24,9 @@ class _GameTwoTrialState extends State<GameTwoTrial> {
   int mistakes = 0;
   late bool gameOver;
   late bool shake = false;
+
+  int timerCount = 30;
+  bool startGame = true;
 
   @override
   void initState() {
@@ -50,6 +54,13 @@ class _GameTwoTrialState extends State<GameTwoTrial> {
     print("Timer has ended!");
   }
 
+  void startGameFun() {
+    setState(() {
+      startGame = false;
+    });
+    timerKey.currentState?.startTimer();
+  }
+
   void retryTrials() {
     setState(() {
       initGame();
@@ -61,7 +72,9 @@ class _GameTwoTrialState extends State<GameTwoTrial> {
     setState(() {
       initGame();
       currentTrial += 1;
+      startGame = true;
     });
+    timerKey.currentState?.resetTimer();
   }
 
   @override
@@ -84,7 +97,8 @@ class _GameTwoTrialState extends State<GameTwoTrial> {
               // Game Bar
               Tileheading(
                 timer: CountdownTimer(
-                  initialTime: 5,
+                  key: timerKey,
+                  initialTime: timerCount,
                   onTimerEnd: onTimerEnd,
                 ),
                 title: "Game 2",
@@ -93,182 +107,196 @@ class _GameTwoTrialState extends State<GameTwoTrial> {
               ),
               const SizedBox(height: 20),
               // Game Score
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Text("Score: $score",
-                      style: const TextStyle(
-                          color: Colors.green,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20.0)),
-                  Text("Mistakes: $mistakes",
-                      style: const TextStyle(
-                          color: Colors.red,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20.0)),
-                ],
-              ),
-              const SizedBox(height: 20),
-              // Choices and Destinations
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    height: 405,
-                    decoration: const BoxDecoration(
-                      color: Colors.red,
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
+              if (startGame) ...[
+                Center(
+                  child: Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Colors.orange,
+                      borderRadius: BorderRadius.circular(10),
                     ),
-                    child: Wrap(
-                      direction: Axis.vertical,
-                      spacing: 0.1,
-                      runSpacing: 0.1,
-                      children: items.map((item) {
-                        return Container(
-                          decoration: BoxDecoration(
-                            color: AppColors.backgroundColor,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          margin: const EdgeInsets.all(10),
-                          padding: const EdgeInsets.all(10),
-                          child: Draggable<ItemModel>(
-                            data: item,
-                            childWhenDragging: Icon(
-                              item.icon,
-                              color: Colors.grey,
-                            ),
-                            feedback: Icon(
-                              item.icon,
-                              color: Colors.black,
-                              size: 60,
-                            ),
-                            child: item.matched
-                                ? Icon(
-                                    item.icon,
-                                    color: Colors.greenAccent,
-                                    size: 60,
-                                  )
-                                : Icon(
-                                    item.icon,
-                                    color: Colors.white,
-                                    size: 60,
-                                  ),
-                          ),
-                        );
-                      }).toList(),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        startGameFun();
+                      },
+                      child: const Text("Start"),
                     ),
                   ),
-                  if (gameOver) ...[
-                    Container(
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: Colors.orange,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text("DONE",
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold)),
-                          ElevatedButton(
-                            onPressed: () {
-                              _showResults(context);
-                            },
-                            child: const Text("Submit"),
-                          ),
-                          ElevatedButton(
-                              onPressed: () {
-                                nextTrial();
-                              },
-                              child: const Text("Next Trial")),
-                          if (currentTrial == 4)
-                            ElevatedButton(
-                                onPressed: () {
-                                  retryTrials();
-                                },
-                                child: const Text("Reset Trials")),
-                        ],
-                      ),
-                    )
+                ),
+              ] else ...[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Text("Score: $score",
+                        style: const TextStyle(
+                            color: Colors.green,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20.0)),
+                    Text("Mistakes: $mistakes",
+                        style: const TextStyle(
+                            color: Colors.red,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20.0)),
                   ],
-                  const SizedBox(width: 20),
-                  Container(
-                    height: 405,
-                    decoration: const BoxDecoration(
-                      color: Colors.blue,
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                    ),
-                    child: Wrap(
-                      direction: Axis.vertical,
-                      alignment: WrapAlignment.start,
-                      spacing: 0.1,
-                      runSpacing: 0.1,
-                      children: items2.map((item) {
-                        return DragTarget<ItemModel>(
-                          onAccept: (receivedItem) {
-                            setState(() {
-                              if (item.value == receivedItem.value) {
-                                items.remove(receivedItem);
-                                item.matched = true;
-                                score += 10;
-                              } else {
-                                score -= 5;
-                                mistakes += 1;
-                                shake = true;
-
-                                // Reset shake after a short delay
-                                Future.delayed(
-                                    const Duration(milliseconds: 500), () {
-                                  setState(() {
-                                    shake = false;
-                                  });
-                                });
-                              }
-                            });
-                          },
-                          onWillAccept: (receivedItem) {
-                            setState(() {
-                              item.accepting = true;
-                            });
-                            return true;
-                          },
-                          onLeave: (receivedItem) {
-                            setState(() {
-                              item.accepting = false;
-                            });
-                          },
-                          builder: (context, acceptedItems, rejectedItems) =>
-                              Container(
+                ),
+                const SizedBox(height: 20),
+                // Choices and Destinations
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 405,
+                      decoration: const BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                      ),
+                      child: Wrap(
+                        direction: Axis.vertical,
+                        spacing: 0.1,
+                        runSpacing: 0.1,
+                        children: items.map((item) {
+                          return Container(
                             decoration: BoxDecoration(
-                              color:
-                                  item.accepting ? Colors.white : Colors.white,
+                              color: AppColors.backgroundColor,
                               borderRadius: BorderRadius.circular(10),
                             ),
                             margin: const EdgeInsets.all(10),
                             padding: const EdgeInsets.all(10),
-                            height: 80,
-                            width: 80,
-                            alignment: Alignment.center,
-                            child: item.matched
-                                ? Icon(item.icon,
-                                    color: Colors.greenAccent, size: 60)
-                                : Text(
-                                    item.name,
-                                    style: const TextStyle(
-                                        fontSize: 18,
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                          ),
-                        );
-                      }).toList(),
+                            child: Draggable<ItemModel>(
+                              data: item,
+                              childWhenDragging: Icon(
+                                item.icon,
+                                color: Colors.grey,
+                              ),
+                              feedback: Icon(
+                                item.icon,
+                                color: Colors.black,
+                                size: 60,
+                              ),
+                              child: item.matched
+                                  ? Icon(
+                                      item.icon,
+                                      color: Colors.greenAccent,
+                                      size: 60,
+                                    )
+                                  : Icon(
+                                      item.icon,
+                                      color: Colors.white,
+                                      size: 60,
+                                    ),
+                            ),
+                          );
+                        }).toList(),
+                      ),
                     ),
-                  ).animate(target: shake == true ? 1.0 : 0.0).shake(),
-                ],
-              ),
+                    if (gameOver) ...[
+                      Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: Colors.orange,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text("DONE",
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold)),
+                            ElevatedButton(
+                              onPressed: () {
+                                _showResults(context);
+                              },
+                              child: const Text("Submit"),
+                            ),
+                            if (currentTrial == 4)
+                              ElevatedButton(
+                                  onPressed: () {
+                                    retryTrials();
+                                  },
+                                  child: const Text("Reset Trials")),
+                          ],
+                        ),
+                      )
+                    ],
+                    const SizedBox(width: 20),
+                    Container(
+                      height: 405,
+                      decoration: const BoxDecoration(
+                        color: Colors.blue,
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                      ),
+                      child: Wrap(
+                        direction: Axis.vertical,
+                        alignment: WrapAlignment.start,
+                        spacing: 0.1,
+                        runSpacing: 0.1,
+                        children: items2.map((item) {
+                          return DragTarget<ItemModel>(
+                            onAccept: (receivedItem) {
+                              setState(() {
+                                if (item.value == receivedItem.value) {
+                                  items.remove(receivedItem);
+                                  item.matched = true;
+                                  score += 10;
+                                } else {
+                                  score -= 5;
+                                  mistakes += 1;
+                                  shake = true;
+
+                                  // Reset shake after a short delay
+                                  Future.delayed(
+                                      const Duration(milliseconds: 300), () {
+                                    setState(() {
+                                      shake = false;
+                                    });
+                                  });
+                                }
+                              });
+                            },
+                            onWillAccept: (receivedItem) {
+                              setState(() {
+                                item.accepting = true;
+                              });
+                              return true;
+                            },
+                            onLeave: (receivedItem) {
+                              setState(() {
+                                item.accepting = false;
+                              });
+                            },
+                            builder: (context, acceptedItems, rejectedItems) =>
+                                Container(
+                              decoration: BoxDecoration(
+                                color: item.accepting
+                                    ? Colors.white
+                                    : Colors.white,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              margin: const EdgeInsets.all(10),
+                              padding: const EdgeInsets.all(10),
+                              height: 80,
+                              width: 80,
+                              alignment: Alignment.center,
+                              child: item.matched
+                                  ? Icon(item.icon,
+                                      color: Colors.greenAccent, size: 60)
+                                  : Text(
+                                      item.name,
+                                      style: const TextStyle(
+                                          fontSize: 18,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                    ).animate(target: shake == true ? 1.0 : 0.0).shake(),
+                  ],
+                ),
+              ],
               const SizedBox(height: 20),
             ],
           ),
@@ -278,6 +306,14 @@ class _GameTwoTrialState extends State<GameTwoTrial> {
   }
 
   void _showResults(BuildContext context) {
+    // Access the CountdownTimerState to get the remaining time
+    final timerState = context.findAncestorStateOfType<CountdownTimerState>();
+
+    int remainingTime = timerState?.getRemainingTime ?? 0;
+    int timeTaken = timerCount - remainingTime;
+
+    print("The player took $timeTaken seconds to submit the answer.");
+
     AwesomeDialog(
       width: 400,
       context: context,
@@ -285,7 +321,7 @@ class _GameTwoTrialState extends State<GameTwoTrial> {
       headerAnimationLoop: true,
       animType: AnimType.bottomSlide,
       title: 'Game Results',
-      desc: 'Your final score is $score',
+      desc: 'Your final score is $score\nYou answered in $timeTaken seconds',
       buttonsTextStyle: const TextStyle(color: Colors.white, fontSize: 14),
       showCloseIcon: false,
       dismissOnTouchOutside: false,
@@ -294,6 +330,7 @@ class _GameTwoTrialState extends State<GameTwoTrial> {
       },
       btnOkOnPress: () {
         _saveUserResponses();
+        nextTrial();
       },
     ).show();
   }

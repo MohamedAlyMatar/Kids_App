@@ -7,7 +7,7 @@ class CountdownTimer extends StatefulWidget {
   final int initialTime; // Initial time in seconds
   final VoidCallback onTimerEnd; // Callback for when the timer ends
 
-  const CountdownTimer({
+  CountdownTimer({
     Key? key,
     required this.initialTime,
     required this.onTimerEnd,
@@ -28,6 +28,8 @@ class CountdownTimerState extends State<CountdownTimer> {
     remainingTime = widget.initialTime;
     audioPlayer = AudioPlayer();
   }
+
+  int get getRemainingTime => remainingTime;
 
   void startTimer() {
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
