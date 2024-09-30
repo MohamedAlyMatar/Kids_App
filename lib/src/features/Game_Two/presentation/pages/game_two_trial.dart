@@ -8,9 +8,9 @@ import 'package:kids_app/src/features/Game_One/presentation/widgets/timer.dart';
 import 'package:kids_app/src/features/Game_Two/data/datasources/game_services.dart';
 import 'package:kids_app/src/features/Game_Two/data/models/item_model.dart';
 import 'package:kids_app/src/features/Game_Two/presentation/bloc/game_two_bloc.dart';
-import 'package:kids_app/src/features/Game_Two/presentation/widgets/draggable_items.dart';
-import 'package:kids_app/src/features/Game_Two/presentation/widgets/destination_items.dart';
-import 'package:kids_app/src/features/Game_Two/presentation/widgets/timer_widget.dart';
+// import 'package:kids_app/src/features/Game_Two/presentation/widgets/draggable_items.dart';
+// import 'package:kids_app/src/features/Game_Two/presentation/widgets/destination_items.dart';
+// import 'package:kids_app/src/features/Game_Two/presentation/widgets/timer_widget.dart';
 
 class GameTwoTrial extends StatefulWidget {
   @override
@@ -20,7 +20,6 @@ class GameTwoTrial extends StatefulWidget {
 class _GameTwoTrialState extends State<GameTwoTrial> {
   final GameService _gameService = GameService();
   final GlobalKey<CountdownTimerState> timerKey = GlobalKey();
-  int timerCount = 30;
   bool startGame = true;
 
   @override
@@ -40,11 +39,18 @@ class _GameTwoTrialState extends State<GameTwoTrial> {
     timerKey.currentState?.startTimer();
   }
 
+  void nextTrial() {
+    _gameService.initGame();
+    _gameService.currentTrial += 1;
+    startGame = true;
+    timerKey.currentState?.resetTimer();
+  }
+
   void _showResults(BuildContext context) {
     // Access the CountdownTimerState to get the remaining time
     final timerState = context.findAncestorStateOfType<CountdownTimerState>();
     int remainingTime = timerState?.getRemainingTime ?? 0;
-    int timeTaken = timerCount - remainingTime;
+    int timeTaken = _gameService.timerCount - remainingTime;
 
     print("The player took $timeTaken seconds to submit the answer.");
 
@@ -65,7 +71,7 @@ class _GameTwoTrialState extends State<GameTwoTrial> {
       },
       btnOkOnPress: () {
         _gameService.saveUserResponses();
-        _gameService.nextTrial();
+        nextTrial();
         setState(() {});
       },
     ).show();
@@ -79,7 +85,7 @@ class _GameTwoTrialState extends State<GameTwoTrial> {
         body: Center(
           child: Container(
             width: 600,
-            height: 700,
+            height: 640,
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
               color: AppColors.primaryColor,
@@ -92,7 +98,7 @@ class _GameTwoTrialState extends State<GameTwoTrial> {
                 Tileheading(
                   timer: CountdownTimer(
                     key: timerKey,
-                    initialTime: timerCount,
+                    initialTime: _gameService.timerCount,
                     onTimerEnd: onTimerEnd,
                   ),
                   title: "Game 2",
@@ -255,8 +261,8 @@ class _GameTwoTrialState extends State<GameTwoTrial> {
                                       Container(
                                 decoration: BoxDecoration(
                                   color: item.accepting
-                                      ? Colors.green
-                                      : Colors.blue,
+                                      ? Colors.white
+                                      : Colors.white,
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 margin: const EdgeInsets.all(10),
@@ -266,7 +272,7 @@ class _GameTwoTrialState extends State<GameTwoTrial> {
                                 alignment: Alignment.center,
                                 child: item.matched
                                     ? Icon(item.icon,
-                                        color: Colors.greenAccent, size: 60)
+                                        color: Colors.green, size: 60)
                                     : Text(
                                         item.name,
                                         style: const TextStyle(
@@ -280,16 +286,9 @@ class _GameTwoTrialState extends State<GameTwoTrial> {
                         ),
                       )
                           .animate(
-                              target: GameService().shake == true ? 1.0 : 0.0)
+                              target: _gameService.shake == true ? 1.0 : 0.0)
                           .shake(),
                     ],
-                  ),
-                  const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () {
-                      _showResults(context);
-                    },
-                    child: const Text("Finish"),
                   ),
                 ],
               ],

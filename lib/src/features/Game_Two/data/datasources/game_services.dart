@@ -4,13 +4,12 @@ import 'package:kids_app/src/features/Game_Two/data/models/item_model.dart';
 class GameService {
   List<ItemModel> items = [];
   List<ItemModel> items2 = [];
+  int timerCount = 30;
   int currentTrial = 1;
   int score = 0;
   int mistakes = 0;
   late bool gameOver = false;
   late bool shake = false;
-
-  int timerCount = 30;
 
   void initGame() {
     score = 0;
@@ -28,11 +27,6 @@ class GameService {
     items2.shuffle();
   }
 
-  void nextTrial() {
-    initGame();
-    currentTrial += 1;
-  }
-
   void retryTrials() {
     initGame();
     currentTrial = 1;
@@ -45,6 +39,9 @@ class GameService {
       score -= 5;
       mistakes += 1;
       shake = true;
+      Future.delayed(const Duration(milliseconds: 500), () {
+        shake = false;
+      });
     }
     if (items.isEmpty) gameOver = true;
   }
