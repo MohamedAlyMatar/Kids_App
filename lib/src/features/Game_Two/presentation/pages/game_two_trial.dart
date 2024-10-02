@@ -5,8 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kids_app/src/core/utils/app_colors.dart';
 import 'package:kids_app/src/core/widgets/tileHeading.dart';
 import 'package:kids_app/src/features/Game_One/presentation/widgets/timer.dart';
-import 'package:kids_app/src/features/Game_Two/data/datasources/game_services.dart';
 import 'package:kids_app/src/features/Game_Two/data/models/item_model.dart';
+import 'package:kids_app/src/features/Game_Two/data/repositories/game_two_repo_impl.dart';
 import 'package:kids_app/src/features/Game_Two/presentation/bloc/game_two_bloc.dart';
 // import 'package:kids_app/src/features/Game_Two/presentation/widgets/draggable_items.dart';
 // import 'package:kids_app/src/features/Game_Two/presentation/widgets/destination_items.dart';
@@ -18,7 +18,7 @@ class GameTwoTrial extends StatefulWidget {
 }
 
 class _GameTwoTrialState extends State<GameTwoTrial> {
-  final GameService _gameService = GameService();
+  final GameTwoRepoImpl _gameService = GameTwoRepoImpl();
   final GlobalKey<CountdownTimerState> timerKey = GlobalKey();
   bool startGame = true;
 
@@ -26,10 +26,6 @@ class _GameTwoTrialState extends State<GameTwoTrial> {
   void initState() {
     super.initState();
     _gameService.initGame();
-  }
-
-  void onTimerEnd() {
-    print("Timer has ended!");
   }
 
   void startGameFun() {
@@ -99,7 +95,7 @@ class _GameTwoTrialState extends State<GameTwoTrial> {
                   timer: CountdownTimer(
                     key: timerKey,
                     initialTime: _gameService.timerCount,
-                    onTimerEnd: onTimerEnd,
+                    // onTimerEnd: onTimerEnd,
                   ),
                   title: "Game 2",
                   subtitle: "Trial ${_gameService.currentTrial} of 4",

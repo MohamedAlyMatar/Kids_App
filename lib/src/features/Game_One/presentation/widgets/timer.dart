@@ -5,12 +5,12 @@ import 'package:audioplayers/audioplayers.dart';
 
 class CountdownTimer extends StatefulWidget {
   final int initialTime; // Initial time in seconds
-  final VoidCallback onTimerEnd; // Callback for when the timer ends
+  // final VoidCallback onTimerEnd; // Callback for when the timer ends
 
   CountdownTimer({
     Key? key,
     required this.initialTime,
-    required this.onTimerEnd,
+    // required this.onTimerEnd,
   }) : super(key: key);
 
   @override
@@ -38,7 +38,7 @@ class CountdownTimerState extends State<CountdownTimer> {
           remainingTime--;
         } else {
           _timer.cancel();
-          widget.onTimerEnd();
+          // widget.onTimerEnd();
           _playAlertSound();
           showDialog();
         }

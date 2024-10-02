@@ -134,8 +134,7 @@ class _GameOneTrialState extends State<GameOneTrial> {
               child: Column(
                 children: [
                   Tileheading(
-                      timer: CountdownTimer(
-                          initialTime: 30, onTimerEnd: onTimerEnd),
+                      timer: CountdownTimer(initialTime: 30),
                       title: "Game 1",
                       subtitle: "Trial $currentTrial of 3",
                       trailing: "AWM"),

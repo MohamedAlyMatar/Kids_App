@@ -99,7 +99,7 @@ class _GameTwoTrialState extends State<GameTwoTrial> {
                 timer: CountdownTimer(
                   key: timerKey,
                   initialTime: timerCount,
-                  onTimerEnd: onTimerEnd,
+                  // onTimerEnd: onTimerEnd,
                 ),
                 title: "Game 2",
                 subtitle: "Trial $currentTrial of 4",

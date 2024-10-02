@@ -117,7 +117,7 @@ class _GameThreeTrialOneState extends State<GameThreeTrialOne> {
                     timer: CountdownTimer(
                       key: timerKey,
                       initialTime: 30,
-                      onTimerEnd: onTimerEnd,
+                      // onTimerEnd: onTimerEnd,
                     ),
                     title: "Game 3 - Test 1",
                     subtitle: "Trial $currentTest of 8 - Level $currentLevel",

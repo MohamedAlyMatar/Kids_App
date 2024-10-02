@@ -105,7 +105,6 @@ class _GameOneTestState extends State<GameOneTest> {
                   Tileheading(
                     timer: CountdownTimer(
                       initialTime: 30,
-                      onTimerEnd: onTimerEnd,
                     ),
                     title: "Game 3 - Test 1",
                     subtitle: "Trial $currentTest of 8 - Level $currentLevel",

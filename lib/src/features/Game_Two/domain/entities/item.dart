@@ -1,11 +1,16 @@
-class Item {
-  final String name;
-  final String value;
-  final bool matched;
+import 'package:flutter/material.dart';
 
-  Item({
-    required this.name,
-    required this.value,
-    this.matched = false,
-  });
+class ItemModel {
+  final String name;
+  final int value;
+  bool matched;
+  final IconData icon;
+  bool accepting;
+
+  ItemModel(
+      {required this.name,
+      required this.value,
+      required this.icon,
+      this.matched = false,
+      this.accepting = false});
 }
