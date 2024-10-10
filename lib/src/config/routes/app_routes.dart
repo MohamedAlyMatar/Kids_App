@@ -11,10 +11,10 @@ import 'package:kids_app/src/features/Game_Three/presentation/pages/game_three_d
 import 'package:kids_app/src/features/Game_Three/presentation/pages/game_three_test_one.dart';
 import 'package:kids_app/src/features/Game_Three/presentation/pages/game_three_trial_one.dart';
 import 'package:kids_app/src/features/Game_Two/presentation/bloc/game_two_bloc.dart';
-import 'package:kids_app/src/features/Game_Two/presentation/pages/game_two_description.dart';
-import 'package:kids_app/src/features/Game_Two/presentation/pages/game_two_familiarize.dart';
-import 'package:kids_app/src/features/Game_Two/presentation/pages/game_two_test.dart';
-import 'package:kids_app/src/features/Game_Two/presentation/pages/game_two_trial.dart';
+import 'package:kids_app/src/features/Game_Two/presentation/feature_screens/description/presentation/pages/game_two_description.dart';
+// import 'package:kids_app/src/features/Game_Two/presentation/familiarize/pages/game_two_familiarize.dart';
+import 'package:kids_app/src/features/Game_Two/presentation/feature_screens/game_two_test/presentation/pages/game_two_test.dart';
+import 'package:kids_app/src/features/Game_Two/presentation/feature_screens/game_two_trial/presentation/pages/game_two_trial.dart';
 import 'package:kids_app/src/features/Games/presentation/bloc/games_bloc.dart';
 import 'package:kids_app/src/features/Games/presentation/pages/games_screen.dart';
 import 'package:kids_app/src/features/Games/presentation/pages/instr_screen.dart';
@@ -127,11 +127,11 @@ class AppRoutes {
               create: (context) => GameTwoBloc(), child: GameTwoTest()),
         );
 
-      case Routes.gameTwoFam:
-        return MaterialPageRoute(
-          builder: (contect) => BlocProvider(
-              create: (context) => GameTwoBloc(), child: FamiliarizeScreen()),
-        );
+      // case Routes.gameTwoFam:
+      //   return MaterialPageRoute(
+      //     builder: (contect) => BlocProvider(
+      //         create: (context) => GameTwoBloc(), child: FamiliarizeScreen()),
+      //   );
 
       // Game Three Routes ----------------------------------------
       case Routes.gameThreeDesc:
