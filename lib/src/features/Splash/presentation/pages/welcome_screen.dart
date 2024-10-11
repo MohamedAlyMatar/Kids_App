@@ -52,7 +52,7 @@ class WelcomeScreen extends StatelessWidget {
                         Image.asset(ImgAssets.brain, width: 200),
                         InkWell(
                           onTap: () {
-                            Navigator.pushNamed(context, Routes.signUp);
+                            Navigator.pushNamed(context, Routes.options);
                           },
                           child: const Text(
                             "Press to Start...",
