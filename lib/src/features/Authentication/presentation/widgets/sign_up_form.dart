@@ -13,10 +13,11 @@ class SignUpForm extends StatefulWidget {
 class _SignUpFormState extends State<SignUpForm> {
   final _formKey = GlobalKey<FormState>();
   String? _handness = 'Right';
-  bool _hasDLD = false;
-  bool _hasHearingLoss = false;
-  bool _hasSLI = false;
-  bool _hasPervasiveDisorder = false;
+  bool? _hasDLD = false;
+  bool? _hasHearingLoss = false;
+  bool? _hasSLI = false;
+  bool? _hasPervasiveDisorder = false;
+  bool? _hasOther = false;
   String? _hearingLossSide;
   String? _hearingLossDegree;
   String? _hearingLossType;
@@ -49,7 +50,7 @@ class _SignUpFormState extends State<SignUpForm> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text(
+              const Text(
                 "Personal Data",
                 textAlign: TextAlign.center,
                 style: TextStyle(
@@ -66,15 +67,13 @@ class _SignUpFormState extends State<SignUpForm> {
                 return null;
               }),
               const SizedBox(height: 16),
-              DatePickerWidget(
+              const DatePickerWidget(
                 label: 'Date of Birth',
                 hintText: '',
               ),
               const SizedBox(height: 16),
-              _buildDropdown(
+              _buildToggle(
                 "Handness",
-                "Select handness",
-                ['Right', 'Left'],
                 _handness,
                 (String? value) {
                   setState(() {
@@ -83,19 +82,73 @@ class _SignUpFormState extends State<SignUpForm> {
                 },
               ),
               const SizedBox(height: 16),
-              _buildYesNo("Delayed Language Disorder (DLD)", _hasDLD, (value) {
-                setState(() {
-                  _hasDLD = value;
-                });
-              }),
-              if (_hasDLD) _buildTextField("Cause", "Enter the cause", null),
+              _buildYesNoToggle(
+                "Delayed Language Disorder (DLD)",
+                _hasDLD,
+                (bool? value) {
+                  setState(() {
+                    _hasDLD = value;
+                  });
+                },
+              ),
+              if (_hasDLD!) ...[
+                const Text(
+                  "Please select the causes of DLD: ",
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+                _buildYesNoToggle(
+                  "Hearing Loss",
+                  _hasHearingLoss,
+                  (bool? value) {
+                    setState(() {
+                      _hasHearingLoss = value;
+                    });
+                  },
+                ),
+                _buildYesNoToggle(
+                  "Persevasive Disorder",
+                  _hasPervasiveDisorder,
+                  (bool? value) {
+                    setState(() {
+                      _hasPervasiveDisorder = value;
+                    });
+                  },
+                ),
+                _buildYesNoToggle(
+                  "Specific Language Impairment (SLI)",
+                  _hasSLI,
+                  (bool? value) {
+                    setState(() {
+                      _hasSLI = value;
+                    });
+                  },
+                ),
+                _buildYesNoToggle(
+                  "Other",
+                  _hasOther,
+                  (bool? value) {
+                    setState(() {
+                      _hasOther = value;
+                    });
+                  },
+                ),
+              ],
               const SizedBox(height: 16),
-              _buildYesNo("Hearing Loss", _hasHearingLoss, (value) {
-                setState(() {
-                  _hasHearingLoss = value;
-                });
-              }),
-              if (_hasHearingLoss) ...[
+              if (_hasHearingLoss!) ...[
+                const Text(
+                  "Hearing Loss: ",
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
                 _buildDropdown("Side", "Select side",
                     ['Unilateral', 'Bilateral'], _hearingLossSide, (value) {
                   setState(() {
@@ -145,14 +198,17 @@ class _SignUpFormState extends State<SignUpForm> {
                   });
                 }),
               ],
-              const SizedBox(height: 16),
-              _buildYesNo("Specific Language Impairment (SLI)", _hasSLI,
-                  (value) {
-                setState(() {
-                  _hasSLI = value;
-                });
-              }),
-              if (_hasSLI)
+              if (_hasSLI!) ...[
+                const SizedBox(height: 16),
+                const Text(
+                  "Specific Language Impairment: ",
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
                 _buildDropdown(
                     "SLI Type",
                     "Select SLI Type",
@@ -162,13 +218,18 @@ class _SignUpFormState extends State<SignUpForm> {
                     _specificLanguageImpairment = value;
                   });
                 }),
-              const SizedBox(height: 16),
-              _buildYesNo("Pervasive Disorder", _hasPervasiveDisorder, (value) {
-                setState(() {
-                  _hasPervasiveDisorder = value;
-                });
-              }),
-              if (_hasPervasiveDisorder)
+              ],
+              if (_hasPervasiveDisorder!) ...[
+                const SizedBox(height: 16),
+                const Text(
+                  "Pervasive Disorder: ",
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
                 _buildDropdown(
                     "Pervasive Disorder Type",
                     "Select Pervasive Disorder",
@@ -178,11 +239,33 @@ class _SignUpFormState extends State<SignUpForm> {
                     _pervasiveDisorder = value;
                   });
                 }),
+              ],
+              if (_hasOther!) ...[
+                const SizedBox(height: 16),
+                const Text(
+                  "Write other causes: ",
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                _buildTextField(
+                    "Other", "Enter other disorders (if any)", null),
+              ],
               const SizedBox(height: 16),
-              _buildTextField("Other", "Enter other disorders (if any)", null),
-              const SizedBox(height: 16),
-              _buildTextField(
-                  "Reference Physician", "Enter physician's name", null),
+              const Text(
+                "Reference your Physician",
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
+              _buildTextField("Physician name", "Enter physician's name", null),
               const SizedBox(height: 24),
               ElevatedButton(
                 onPressed: () {
@@ -268,4 +351,63 @@ class _SignUpFormState extends State<SignUpForm> {
       ],
     );
   }
+
+// Helper to build Right/Left checkbox toggle for Handness
+  Widget _buildToggle(
+      String label, String? selectedValue, Function(String?) onChanged) {
+    return Row(
+      children: [
+        Text(label, style: TextStyle(fontSize: 16)),
+        const Spacer(),
+        Row(
+          children: [
+            Checkbox(
+              value: selectedValue == 'Right',
+              onChanged: (bool? value) {
+                onChanged(value == true ? 'Right' : null);
+              },
+            ),
+            const Text("Right"),
+            const SizedBox(width: 20), // Add space between options
+            Checkbox(
+              value: selectedValue == 'Left',
+              onChanged: (bool? value) {
+                onChanged(value == true ? 'Left' : null);
+              },
+            ),
+            Text("Left"),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+Widget _buildYesNoToggle(
+    String label, bool? selectedValue, Function(bool?) onChanged) {
+  return Row(
+    children: [
+      Text(label, style: TextStyle(fontSize: 16)),
+      const Spacer(),
+      Row(
+        children: [
+          Checkbox(
+            value: selectedValue == true,
+            onChanged: (bool? value) {
+              onChanged(value == true ? true : false);
+            },
+          ),
+          const Text("Yes"),
+          const SizedBox(width: 20),
+          Checkbox(
+            value: selectedValue == false,
+            onChanged: (bool? value) {
+              onChanged(value == true ? false : true);
+            },
+          ),
+          const Text("No"),
+        ],
+      ),
+    ],
+  );
 }

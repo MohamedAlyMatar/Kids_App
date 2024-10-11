@@ -43,6 +43,8 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
       controller: _dateController,
       readOnly: true,
       decoration: InputDecoration(
+        fillColor: Colors.white,
+        filled: true,
         labelText: widget.label,
         hintText: _selectedDate != null
             ? DateFormat.yMd().format(_selectedDate!)
