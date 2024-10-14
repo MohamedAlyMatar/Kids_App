@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kids_app/src/config/routes/app_routes.dart';
+import 'package:kids_app/src/core/utils/app_colors.dart';
 
 class Options extends StatelessWidget {
   Options({super.key});
@@ -9,7 +10,7 @@ class Options extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: Container(
-          width: 300,
+          width: 500,
           padding: const EdgeInsets.all(24.0),
           decoration: BoxDecoration(
             color: Colors.white,
@@ -27,29 +28,38 @@ class Options extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               const Text(
-                'Is it your first time?',
+                'Sign Up for your first time',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(height: 24),
-              _buildButton(
-                context,
-                label: "Sign In",
-                onPressed: () {
-                  // Navigate to Sign In Screen
-                  Navigator.pushNamed(context, Routes.signIn);
-                },
-              ),
-              const SizedBox(height: 16),
               _buildButton(
                 context,
                 label: "Sign Up",
                 onPressed: () {
                   // Navigate to Sign Up Screen
                   Navigator.pushNamed(context, Routes.signUp);
+                },
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              const Text(
+                'Already have an account? Sign In',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              _buildButton(
+                context,
+                label: "Sign In",
+                onPressed: () {
+                  // Navigate to Sign In Screen
+                  Navigator.pushNamed(context, Routes.signIn);
                 },
               ),
             ],
@@ -62,8 +72,10 @@ class Options extends StatelessWidget {
   // Helper method to build square buttons
   Widget _buildButton(BuildContext context,
       {required String label, required VoidCallback onPressed}) {
-    return SizedBox(
-      width: double.infinity,
+    return Container(
+      padding: const EdgeInsets.all(10),
+      // width: double.infinity,
+      width: 250,
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
@@ -71,7 +83,7 @@ class Options extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
-          backgroundColor: Colors.blue, // Customize the button color
+          backgroundColor: AppColors.backgroundColor,
         ),
         child: Text(
           label,

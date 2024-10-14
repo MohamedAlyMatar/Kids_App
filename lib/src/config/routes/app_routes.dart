@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kids_app/src/features/Authentication/presentation/bloc/authentication_bloc.dart';
-import 'package:kids_app/src/features/Authentication/presentation/pages/sign_in.dart';
 import 'package:kids_app/src/features/Authentication/presentation/pages/Options.dart';
 import 'package:kids_app/src/features/Authentication/presentation/pages/sign_in_view.dart';
 import 'package:kids_app/src/features/Authentication/presentation/pages/sign_up_view.dart';
@@ -20,8 +19,8 @@ import 'package:kids_app/src/features/Game_Two/presentation/feature_screens/game
 import 'package:kids_app/src/features/Games/presentation/bloc/games_bloc.dart';
 import 'package:kids_app/src/features/Games/presentation/pages/games_screen.dart';
 import 'package:kids_app/src/features/Games/presentation/pages/instr_screen.dart';
-import 'package:kids_app/src/features/Splash/presentation/pages/splash_screen.dart';
-import 'package:kids_app/src/features/Splash/presentation/pages/welcome_screen.dart';
+import 'package:kids_app/src/features/0_Splash/presentation/pages/splash_screen.dart';
+import 'package:kids_app/src/features/0_Splash/presentation/pages/welcome_screen.dart';
 
 class Routes {
   static const String initialRoute = "/";
@@ -78,7 +77,7 @@ class AppRoutes {
         return MaterialPageRoute(
             builder: (contect) => BlocProvider(
                 create: (context) => AuthenticationBloc(),
-                child: const SignInScreen()));
+                child: SignInScreen()));
 
       case Routes.signUp:
         return MaterialPageRoute(
