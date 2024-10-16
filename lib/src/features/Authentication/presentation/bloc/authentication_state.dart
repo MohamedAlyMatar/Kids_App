@@ -24,36 +24,35 @@ class SignUpFailure extends AuthenticationState {
   SignUpFailure(this.error);
 }
 
-// Extended Authentication State to Handle the Additional Booleans
-class AuthenticationStateWithBooleans extends AuthenticationState {
-  final bool? dldStatus;
-  final bool? hearingLossStatus;
-  final bool? pdStatus;
-  final bool? sliStatus;
-  final bool? otherStatus;
+// class AuthenticationStateWithBooleans extends AuthenticationState {
+//   final bool? dldStatus;
+//   final bool? hearingLossStatus;
+//   final bool? pdStatus;
+//   final bool? sliStatus;
+//   final bool? otherStatus;
 
-  AuthenticationStateWithBooleans({
-    this.dldStatus,
-    this.hearingLossStatus,
-    this.pdStatus,
-    this.sliStatus,
-    this.otherStatus,
-  });
+//   AuthenticationStateWithBooleans({
+//     this.dldStatus,
+//     this.hearingLossStatus,
+//     this.pdStatus,
+//     this.sliStatus,
+//     this.otherStatus,
+//   });
 
-  // Implement copyWith to update specific fields without affecting others
-  AuthenticationStateWithBooleans copyWith({
-    bool? dldStatus,
-    bool? hearingLossStatus,
-    bool? pdStatus,
-    bool? sliStatus,
-    bool? otherStatus,
-  }) {
-    return AuthenticationStateWithBooleans(
-      dldStatus: dldStatus ?? this.dldStatus,
-      hearingLossStatus: hearingLossStatus ?? this.hearingLossStatus,
-      pdStatus: pdStatus ?? this.pdStatus,
-      sliStatus: sliStatus ?? this.sliStatus,
-      otherStatus: otherStatus ?? this.otherStatus,
-    );
-  }
-}
+//   // Implement copyWith to update specific fields without affecting others
+//   AuthenticationStateWithBooleans copyWith({
+//     bool? dldStatus,
+//     bool? hearingLossStatus,
+//     bool? pdStatus,
+//     bool? sliStatus,
+//     bool? otherStatus,
+//   }) {
+//     return AuthenticationStateWithBooleans(
+//       dldStatus: dldStatus ?? this.dldStatus,
+//       hearingLossStatus: hearingLossStatus ?? this.hearingLossStatus,
+//       pdStatus: pdStatus ?? this.pdStatus,
+//       sliStatus: sliStatus ?? this.sliStatus,
+//       otherStatus: otherStatus ?? this.otherStatus,
+//     );
+//   }
+// }

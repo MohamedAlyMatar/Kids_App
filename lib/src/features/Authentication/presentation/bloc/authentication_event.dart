@@ -1,6 +1,6 @@
 abstract class AuthenticationEvent {}
 
-// Sign In Events
+// Sign In Events ------------------------------------------------------------
 class SignInEmailChanged extends AuthenticationEvent {
   final String? email;
   SignInEmailChanged(this.email);
@@ -13,7 +13,7 @@ class SignInPasswordChanged extends AuthenticationEvent {
 
 class SignInSubmitted extends AuthenticationEvent {}
 
-// Sign Up Events
+// Sign Up Events ------------------------------------------------------------
 class SignUpNameChanged extends AuthenticationEvent {
   final String? name;
   SignUpNameChanged(this.name);
@@ -34,31 +34,31 @@ class HandnessChanged extends AuthenticationEvent {
   HandnessChanged(this.Handness);
 }
 
-// Yes-No Events
-class DLDChanged extends AuthenticationEvent {
-  final bool? yesNo;
-  DLDChanged(this.yesNo);
-}
+// // Yes-No Events
+// class DLDChanged extends AuthenticationEvent {
+//   final bool? yesNo;
+//   DLDChanged(this.yesNo);
+// }
 
-class HearingLossChanged extends AuthenticationEvent {
-  final bool? yesNo;
-  HearingLossChanged(this.yesNo);
-}
+// class HearingLossChanged extends AuthenticationEvent {
+//   final bool? yesNo;
+//   HearingLossChanged(this.yesNo);
+// }
 
-class PDChanged extends AuthenticationEvent {
-  final bool? yesNo;
-  PDChanged(this.yesNo);
-}
+// class PDChanged extends AuthenticationEvent {
+//   final bool? yesNo;
+//   PDChanged(this.yesNo);
+// }
 
-class SLIChanged extends AuthenticationEvent {
-  final bool? yesNo;
-  SLIChanged(this.yesNo);
-}
+// class SLIChanged extends AuthenticationEvent {
+//   final bool? yesNo;
+//   SLIChanged(this.yesNo);
+// }
 
-class OtherChanged extends AuthenticationEvent {
-  final bool? yesNo;
-  OtherChanged(this.yesNo);
-}
+// class OtherChanged extends AuthenticationEvent {
+//   final bool? yesNo;
+//   OtherChanged(this.yesNo);
+// }
 
 // Value Events
 class HearingLossSideChanged extends AuthenticationEvent {

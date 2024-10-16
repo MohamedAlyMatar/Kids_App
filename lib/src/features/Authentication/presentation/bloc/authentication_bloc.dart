@@ -49,43 +49,43 @@ class AuthenticationBloc
         emit(SignUpFailure('An error occurred while signing up'));
       }
     });
-
-    // Handle boolean status changes
-    bool? hasDLD = false;
-    on<DLDChanged>((event, emit) {
-      final currentState = state;
-      hasDLD = event.yesNo;
-      if (currentState is AuthenticationStateWithBooleans) {
-        emit(currentState.copyWith(dldStatus: event.yesNo));
-      }
-    });
-
-    on<HearingLossChanged>((event, emit) {
-      final currentState = state;
-      if (currentState is AuthenticationStateWithBooleans) {
-        emit(currentState.copyWith(hearingLossStatus: event.yesNo));
-      }
-    });
-
-    on<PDChanged>((event, emit) {
-      final currentState = state;
-      if (currentState is AuthenticationStateWithBooleans) {
-        emit(currentState.copyWith(pdStatus: event.yesNo));
-      }
-    });
-
-    on<SLIChanged>((event, emit) {
-      final currentState = state;
-      if (currentState is AuthenticationStateWithBooleans) {
-        emit(currentState.copyWith(sliStatus: event.yesNo));
-      }
-    });
-
-    on<OtherChanged>((event, emit) {
-      final currentState = state;
-      if (currentState is AuthenticationStateWithBooleans) {
-        emit(currentState.copyWith(otherStatus: event.yesNo));
-      }
-    });
   }
 }
+    //   // Handle boolean status changes
+    //   bool? hasDLD = false;
+    //   on<DLDChanged>((event, emit) {
+    //     final currentState = state;
+    //     hasDLD = event.yesNo;
+    //     if (currentState is AuthenticationStateWithBooleans) {
+    //       emit(currentState.copyWith(dldStatus: event.yesNo));
+    //     }
+    //   });
+
+    //   on<HearingLossChanged>((event, emit) {
+    //     final currentState = state;
+    //     if (currentState is AuthenticationStateWithBooleans) {
+    //       emit(currentState.copyWith(hearingLossStatus: event.yesNo));
+    //     }
+    //   });
+
+    //   on<PDChanged>((event, emit) {
+    //     final currentState = state;
+    //     if (currentState is AuthenticationStateWithBooleans) {
+    //       emit(currentState.copyWith(pdStatus: event.yesNo));
+    //     }
+    //   });
+
+    //   on<SLIChanged>((event, emit) {
+    //     final currentState = state;
+    //     if (currentState is AuthenticationStateWithBooleans) {
+    //       emit(currentState.copyWith(sliStatus: event.yesNo));
+    //     }
+    //   });
+
+    //   on<OtherChanged>((event, emit) {
+    //     final currentState = state;
+    //     if (currentState is AuthenticationStateWithBooleans) {
+    //       emit(currentState.copyWith(otherStatus: event.yesNo));
+    //     }
+    //   });
+
