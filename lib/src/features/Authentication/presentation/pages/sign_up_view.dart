@@ -41,17 +41,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return Scaffold(body: BlocBuilder<AuthenticationBloc, AuthenticationState>(
         builder: (context, state) {
       if (state is SignUpLoading) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Signing up...'),
-          duration: Duration(seconds: 2),
-        ));
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text('Signing up...'),
+            duration: Duration(seconds: 2),
+          ));
+        });
       } else if (state is SignUpSuccess) {
-        Navigator.pushReplacementNamed(context, Routes.gamesMenu);
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          Navigator.pushReplacementNamed(context, Routes.gamesMenu);
+        });
       } else if (state is SignUpFailure) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(state.error),
-          backgroundColor: Colors.red,
-        ));
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(state.error),
+            backgroundColor: Colors.red,
+          ));
+        });
       }
       return SingleChildScrollView(
         child: Center(
@@ -131,7 +137,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     onSaved: (value) {
                       context
                           .read<AuthenticationBloc>()
-                          .add(HandnessChanged(value));
+                          .add(SignUpPasswordChanged(value));
                     },
                   ),
                   const SizedBox(height: 16),
@@ -342,6 +348,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text('Processing Data')),
                         );
+                        _formKey.currentState?.save();
                         context
                             .read<AuthenticationBloc>()
                             .add(SignUpSubmitted());
