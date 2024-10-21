@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kids_app/src/config/routes/app_routes.dart';
 import 'package:kids_app/src/core/utils/app_colors.dart';
+import 'package:kids_app/src/core/utils/assets_manager.dart';
 
 class Options extends StatelessWidget {
   Options({super.key});
@@ -13,57 +14,70 @@ class Options extends StatelessWidget {
           width: 500,
           padding: const EdgeInsets.all(24.0),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: AppColors.primaryColor,
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(
-                color: Colors.grey.withOpacity(0.5),
+                color: AppColors.backgroundColor,
                 spreadRadius: 5,
                 blurRadius: 7,
                 offset: Offset(0, 3),
               ),
             ],
           ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text(
-                'Sign Up for your first time',
+          child: Column(mainAxisSize: MainAxisSize.min, children: [
+            Image.asset(ImgAssets.new_user, width: 100),
+            const Text(
+              "Don't have an account? Sign Up",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            _buildButton(
+              context,
+              label: "Sign Up",
+              onPressed: () {
+                // Navigate to Sign Up Screen
+                Navigator.pushNamed(context, Routes.signUp);
+              },
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Image.asset(ImgAssets.old_user, width: 100),
+            const Text(
+              'Already have an account? Sign In',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            _buildButton(
+              context,
+              label: "Sign In",
+              onPressed: () {
+                // Navigate to Sign In Screen
+                Navigator.pushNamed(context, Routes.signIn);
+              },
+            ),
+            const SizedBox(height: 20),
+            InkWell(
+              onTap: () {
+                Navigator.pushNamed(context, Routes.gamesMenu);
+              },
+              child: const Text(
+                'Skip',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 24,
+                  fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              _buildButton(
-                context,
-                label: "Sign Up",
-                onPressed: () {
-                  // Navigate to Sign Up Screen
-                  Navigator.pushNamed(context, Routes.signUp);
-                },
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              const Text(
-                'Already have an account? Sign In',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              _buildButton(
-                context,
-                label: "Sign In",
-                onPressed: () {
-                  // Navigate to Sign In Screen
-                  Navigator.pushNamed(context, Routes.signIn);
-                },
-              ),
-            ],
-          ),
+            ),
+          ]),
         ),
       ),
     );
