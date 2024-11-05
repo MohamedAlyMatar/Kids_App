@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "804475636661",
+    "project_id": "apd-junior",
+    "storage_bucket": "apd-junior.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:804475636661:android:24bf7146c166a9bf67a7fc",
+        "android_client_info": {
+          "package_name": "apd.asu.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmbwYQwTZf3yC1TyIy4M5T37V6BwR9r78"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
